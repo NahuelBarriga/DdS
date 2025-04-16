@@ -20,6 +20,7 @@ export const getMenu = async (req, res) => {
     try { 
         const item = await serviceMethods.getMenu(); 
         // res.writeHead(200, 'ok'); 
+        console.log(item); //!sacar
         res.json(item);
     } catch { 
         

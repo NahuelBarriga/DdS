@@ -1,0 +1,20 @@
+{
+    "coupons": [
+        {
+            "name": "Juan1",
+            "discount": 20
+        },
+        {
+            "name": "Juan2",
+            "discount": 40
+        },
+        {
+            "name": "Hugo1",
+            "discount": 20
+        },
+        {
+            "name": "hugo2",
+            "discount": 40
+        }
+    ]
+}

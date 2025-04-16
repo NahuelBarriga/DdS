@@ -67,7 +67,7 @@ function RenderMenu() {
       try {
         const menuData = await getMenu();
         const catData = await getAllCat();
-        
+        console.log(menuData); //!sacar
         setMenu(menuData);
         setCategorias(catData || []);
       } catch (error) {

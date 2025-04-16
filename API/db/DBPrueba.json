@@ -1,0 +1,322 @@
+{
+  "items": [
+        {
+      "id": 2,
+      "nombre": "Cafe",
+      "descripcion": "Cafe con leche",
+      "precio": 1800,
+      "categoriaId": 1,
+      "stock": true,
+      "tag": "Veggie",
+      "ingredientes": []
+    },
+    {
+      "id": 3,
+      "nombre": "Jueog",
+      "descripcion": "Cafe con leche",
+      "precio": 1800,
+      "categoriaId": 2,
+      "stock": true,
+      "tag": "Veggie",
+      "ingredientes": []
+    },
+    {
+      "id": 6,
+      "nombre": "Cafe con leche",
+      "descripcion": "Cafe con leche",
+      "precio": 1800,
+      "categoriaId": 1,
+      "stock": true,
+      "tag": "Veggie",
+      "ingredientes": []
+    },
+    {
+      "id": 7,
+      "nombre": "Lagrima",
+      "descripcion": "Cafe con mas leche",
+      "precio": 1800,
+      "categoriaId": 1,
+      "stock": true,
+      "tag": "Veggie",
+      "ingredientes": []
+    },
+    {
+      "id": 8,
+      "nombre": "Tostado",
+      "descripcion": "tostado",
+      "precio": 3000,
+      "categoriaId": 3,
+      "stock": true,
+      "tag": "",
+      "ingredientes": []
+    },
+    {
+      "id": 9,
+      "nombre": "Cortado",
+      "descripcion": "",
+      "precio": 1800,
+      "categoriaId": 1,
+      "stock": true,
+      "tag": ""
+    },
+    {
+      "id": 11,
+      "nombre": "Latte",
+      "descripcion": "",
+      "precio": 1800,
+      "categoriaId": 1,
+      "stock": true,
+      "tag": ""
+    },
+    {
+      "id": 12,
+      "nombre": "Licuado",
+      "descripcion": "Licuado de frutas de agua o leche",
+      "precio": 2500,
+      "categoriaId": 2,
+      "stock": true,
+      "tag": "Veg"
+    },
+    {
+      "id": 13,
+      "nombre": "Pizza",
+      "descripcion": "Pizza",
+      "precio": 2500,
+      "categoriaId": 3,
+      "stock": true,
+      "tag": "Veg"
+    },
+    {
+      "id": 14,
+      "nombre": "Empanada",
+      "descripcion": "",
+      "precio": 25,
+      "categoriaId": 3,
+      "stock": false,
+      "tag": "Veg"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Perez",
+      "cargo": "cliente"
+    },
+    {
+      "id": 2,
+      "nombre": "Marcos",
+      "apellido": "Sanchez",
+      "cargo": "cliente"
+    },
+    {
+      "id": 3,
+      "nombre": "Maria",
+      "apellido": "Sheiw",
+      "cargo": "empleado"
+    }
+  ],
+  "pedidos": [
+    {
+      "id": 1,
+      "cliente": {
+        "nombre": "Juan",
+        "apellido": "Perez"
+      },
+      "fecha": "9/2",
+      "hora": "18:00",
+      "items": [
+        {
+          "id": 1,
+          "nombre": "Cafe",
+          "precio": 1600
+        },
+        {
+          "id": 4,
+          "nombre": "Tostada",
+          "precio": 2500
+        }
+      ],
+      "total": 4100,
+      "estado": "aceptado"
+    },
+    {
+      "id": 2,
+      "cliente": {
+        "nombre": "Marcos",
+        "apellido": "Sanchez"
+      },
+      "fecha": "9/2",
+      "hora": "19:00",
+      "items": [
+        {
+          "id": 2,
+          "nombre": "Te",
+          "precio": 1600
+        }
+      ],
+      "comentario": "jugo con hielo",
+      "total": 2000,
+      "estado": "rechazado"
+    },
+    {
+      "id": 3,
+      "cliente": {
+        "nombre": "Maria",
+        "apellido": "Sheiw"
+      },
+      "fecha": "10/2 ",
+      "hora": "16:00",
+      "items": [
+        {
+          "id": 3,
+          "nombre": "Jugo",
+          "precio": 2000
+        },
+        {
+          "id": 5,
+          "nombre": "Medialuna",
+          "precio": 1200
+        }
+      ],
+      "total": 3200,
+      "estado": "pendiente"
+    }
+  ],
+  "reservas": [
+    {
+      "id": 1,
+      "cliente": {
+        "id": 1,
+        "nombre": "Juan",
+        "apellido": "Perez"
+      },
+      "dia": "7/2",
+      "hora": "18:00",
+      "estado": "aceptada",
+      "cantPersonas": 5
+    },
+    {
+      "id": 2,
+      "cliente": {
+        "id": 2,
+        "nombre": "Marcos",
+        "apellido": "Sanchez"
+      },
+      "dia": "7/2",
+      "hora": "19:00",
+      "estado": "rechazada",
+      "cantPersonas": 4
+    },
+    {
+      "id": 3,
+      "cliente": {
+        "id": 3,
+        "nombre": "Maria",
+        "apellido": "Sheiw"
+      },
+      "dia": "8/2",
+      "hora": "16:00",
+      "estado": "pendiente",
+      "cantPersonas": 7
+    },
+    {
+      "id": 4,
+      "estado": "pendiente",
+      "mesa": {
+        "id": 1,
+        "estado": "Disponible",
+        "locacion": [
+          1,
+          1
+        ]
+      },
+      "comentario": "",
+      "cliente": {
+        "id": 1,
+        "nombre": "juan"
+      },
+      "cantPersonas": 5
+    },
+    {
+      "id": 5,
+      "estado": "pendiente",
+      "mesa": {
+        "id": 1,
+        "estado": "Disponible",
+        "locacion": [
+          1,
+          1
+        ]
+      },
+      "comentario": "",
+      "cliente": {
+        "id": 1,
+        "nombre": "juan"
+      },
+      "cantPersonas": 55
+    }
+  ],
+  "mesas": [
+    {
+      "id": 1,
+      "estado": "Disponible",
+      "locacion": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "estado": "Ocupada",
+      "locacion": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": 3,
+      "estado": "Disponible",
+      "locacion": [
+        3,
+        6
+      ]
+    }
+  ],
+  "caja": [
+    {
+      "fecha": "2025-02-06",
+      "descripcion": "Venta de café",
+      "monto": 1500
+    },
+    {
+      "fecha": "2025-02-06",
+      "descripcion": "Compra de insumos",
+      "monto": -5000
+    },
+    {
+      "fecha": "2025-02-07",
+      "descripcion": "Venta de medialunas",
+      "monto": 4800
+    },
+    {
+      "fecha": "2025-02-07",
+      "descripcion": "Pago de servicios",
+      "monto": -800
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nombre": "Bebida fria"
+    },
+    {
+      "id": 2,
+      "nombre": "Bebida caliente"
+    },
+    {
+      "id": 3,
+      "nombre": "Comida"
+    }
+  ]
+}

@@ -21,6 +21,7 @@ export const getMenu = async() => {
         // const cacheKey = 'menu';
         
         // const cacheData = await redisClients.get(cacheKey);
+        
         // if (cacheData) {
         //     return JSON.parse(cacheData); // Retorna el menu en cache
         // }
@@ -41,6 +42,7 @@ export const getItemById = async (ItemId) => {
         if (!item) {
             throw new Error('Item not found'); //! corregir el error que lanza
         }
+        
         return new itemDTO(item);
     } catch (error) {
         throw new Error('Error fetching Item: ' + error.message); //! corregir el error que lanza

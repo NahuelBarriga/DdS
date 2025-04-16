@@ -9,6 +9,9 @@ class ItemDTO {
         //this.ingredientes = Array.isArray(ingredientes) ? ingredientes.map(String) : []; 
         this.imagen = imagen; //todo: ver que onda
     }
+    static fromJson(data) { 
+        return new ItemDTO(data); 
+    }
 }
 
 export default ItemDTO;
