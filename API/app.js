@@ -45,7 +45,7 @@ if (process.env.CRONS_ENABLED) //config para incializar o no crons
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'nombreCafe'],
   credentials: true
 })); // Permitir solicitudes desde otros dominios
 app.use(helmet({
@@ -54,6 +54,8 @@ app.use(helmet({
 app.use(morgan('dev')); // Logs de solicitudes HTTP en consola
 app.use(express.json()); // Habilitar JSON en el body de las requests
 app.use(express.urlencoded({ extended: true })); // Soporte para datos de formularios
+// Servir imágenes directamente desde carpeta uploads
+app.use('/uploads', express.static(path.join('/uploads')));
 // app.use(passport.initialize());
 //app.use('/imagenes', express.static(path.join(__dirname, 'imagenes'))); // Servir imágenes estáticas
 
