@@ -1,12 +1,10 @@
 
 import serviceMethods from '../services/carritoService.js';
-import mesaService from '../services/mesaService.js';
 
 
 export const createPedido = async (req, res) => { 
     try {
         req.body.clienteId = req.user.id; 
-        const mesa = await mesaService.getMesaByNumero(req.body.mesaId)
         if (mesa) { 
             req.body.mesaId = mesa.id; //ver si existe la mesa
             const newPedido = await serviceMethods.createPedido(req.body, req.user.cargo); 

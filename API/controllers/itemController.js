@@ -1,4 +1,3 @@
-import ItemFormDTO from '../DTOs/itemFormDTO.js';
 import serviceMethods from '../services/itemService.js';
 import { itemSchema } from '../validations/itemValidation.js';
 
