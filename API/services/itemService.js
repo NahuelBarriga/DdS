@@ -1,17 +1,14 @@
-
 import repositoryMethods from "../repositories/itemRepository.js"; //metodos de comunicacion con la db
 import categoriaMethods from "../repositories/categoriaRepository.js"; //metodos de comunicacion con la db
-import redisClients from '../config/redis.js';
-import itemFormDTO from '../DTOs/itemFormDTO.js';
-import itemResDTO from '../DTOs/itemResDTO.js';
-import categoriaFormDTO from "../DTOs/categoriaFormDTO.js";
-import { getIO } from "../config/socket.js";
+import itemDTO from '../DTOs/itemDTO.js';
+import categoriaDTO from "../DTOs/categoriaDTO.js";
+
 
 //get all Items
 export const getAllItems = async({estado, categoria, precioMax, precioMin, tag}) => {
     try { 
         const items = await repositoryMethods.findItemsAll({estado, categoria, precioMax, precioMin, tag});
-        return items.map(item => new itemResDTO(item));
+        return items.map(item => new itemDTO(item));
     } catch (error) {
         throw new Error('Error fetching Items: ' + error.message); //todo: ver error 
     }
@@ -30,7 +27,7 @@ export const getMenu = async() => {
         
         const items = await repositoryMethods.findItemsAll({});
         // await redisClients.setEx(cacheKey, 3600 * 24, JSON.stringify(items)); 
-        return items.map(item => new itemResDTO(item));
+        return items.map(item => new itemDTO(item));
     } catch (error) {
         throw new Error('Error fetching Items: ' + error.message); //todo: ver error 
     }
@@ -44,7 +41,7 @@ export const getItemById = async (ItemId) => {
         if (!item) {
             throw new Error('Item not found'); //! corregir el error que lanza
         }
-        return new itemResDTO(item);
+        return new itemDTO(item);
     } catch (error) {
         throw new Error('Error fetching Item: ' + error.message); //! corregir el error que lanza
     }
@@ -54,7 +51,7 @@ export const getItemById = async (ItemId) => {
 // Create a new Item
 export const createItem = async (itemData) => {
     try {
-        const item = new itemFormDTO(itemData);
+        const item = new itemDTO(itemData);
   
         // if (getAllCategorias().includes(newItem.categoria)) { //verifica que la categoria es una valida antes de crear el DTO
         //     console.log("valido");
@@ -78,7 +75,7 @@ export const updateItem = async(itemId, updateData) => {
         if (!item) {
             throw new Error('Item not found');
         }
-        const updatedItem = new itemFormDTO(updateData); 
+        const updatedItem = new itemDTO(updateData); 
         
         const itemActualizado = await repositoryMethods.updateItem(itemId, updatedItem);
         if (itemActualizado) { 
@@ -111,7 +108,7 @@ export const updateStock = async (itemId) => {
             return res.end(); 
         }
         item.stock = !item.stock;
-        console.log(new itemFormDTO(item))
+        console.log(new itemDTO(item))
         //*esto esta asi para en un futuro agregar el sistema de gestion de stock 
         // if (stock == 0) { 
         //     item.estado = 'agotado'; 
@@ -121,7 +118,7 @@ export const updateStock = async (itemId) => {
         //     res.writeHead(400, 'bad request'); //estado invalido 
         //     return res.end(); 
         // }
-        const itemActualizado = await updateItem(item.id, new itemFormDTO(item));
+        const itemActualizado = await updateItem(item.id, new itemDTO(item));
         console.log(itemActualizado); //!borrar
     } catch (error) {
         console.log(error); 
@@ -147,7 +144,7 @@ export const createCategoria = async(categoriaData) => {
         if (categorias.some(categoria => categoria.nombre === categoriaData.nombre)) {
             throw new Error('Categoria already exists');
         }
-        const categoria = new categoriaFormDTO(categoriaData);
+        const categoria = new categoriaDTO(categoriaData);
         categoriaMethods.saveCategoria(categoria);
     } catch (error) {
         throw new Error('Error deleting categoria: ' + error.message);

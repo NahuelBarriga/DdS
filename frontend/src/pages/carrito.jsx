@@ -5,8 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { CircleX, Plus, Minus, Clock, CheckCircle, XCircle, CreditCard, ShoppingBag } from 'lucide-react';
 import { toast } from "react-toastify";
-import socket from "../config/socket";
-import io from "socket.io-client";
 
 function Carrito() {
   const {
@@ -55,15 +53,6 @@ function Carrito() {
       setCargandoPedidos(false);
     }
   }, [user]);
-
-
-  // Para el socket
-  useEffect(() => {
-    socket.on("pedido:estadoActualizado", ( {pedidoId, estado} ) => {
-      handleActualizacionPedido({pedidoId, estado}); 
-    });
-    return () => socket.off("pedido:estadoActualizado");
-  }, []);
 
   // Cargar pedidos al iniciar y configurar listeners de socket
   useEffect(() => {

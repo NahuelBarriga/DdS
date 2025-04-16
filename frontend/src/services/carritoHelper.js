@@ -1,7 +1,6 @@
 // services/pedidosService.js
 import api from "./api.js";
-import pedidoFormDTO from "../models/pedidoFormDTO.js"
-import PedidoResDTO from "../models/pedidoResDTO.js";
+import pedidoDTO from "../models/pedidoDTO.js"
 
 // Asume que tienes una URL base definida en un archivo de configuración
 const API_URL = `/carrito`;
@@ -9,10 +8,8 @@ const API_URL = `/carrito`;
 // Enviar un nuevo pedido
 export const postPedido = async (pedido) => {
     try {
-        const pedidoNuevo = new pedidoFormDTO(pedido);
-        console.log("pedido a enviar: ",pedidoNuevo); //!sacar
+        const pedidoNuevo = new pedidoDTO(pedido);
         const response = await api.post(API_URL, JSON.stringify(pedidoNuevo));  
-        console.log(response.status);
         return response; 
     } catch (error) {  
         if (error.status == 403) { //token expirado
@@ -43,7 +40,7 @@ export const verificarMesaDisponible = async(mesaId) => {
 export const getPedidosPendientes = async (clienteId) => {
   try { //todo: armar
     const response = await api.get(`${API_URL}/pedidos/cliente/${clienteId}`);
-    return response.data.map(PedidoResDTO.fromJson);
+    return response.data.map(PedidoDTO.fromJson);
   } catch (error) {
     console.error('Error al obtener los pedidos del cliente:', error);
     throw error;

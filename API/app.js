@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import http from 'http';
 import db  from './database/index.js'
+import cors from 'cors'
 
 
 // Importar rutas
@@ -24,11 +25,8 @@ const {sequelize} = db;
 // Inicializar Express
 const app = express();
 
-//trae el puerto
+//trae el puerto, por si no era obvio 
 const PORT = process.env.PORT || 3000;
-
-if (process.env.CRONS_ENABLED) //config para incializar o no crons 
-  iniciarCrons(); // iniciar cron jobs
 
 // Configurar middlewares globales
 app.use(cors({
@@ -36,17 +34,13 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'nombreCafe'],
   credentials: true
-})); // Permitir solicitudes desde otros dominios
+})); 
 app.use(helmet({
   contentSecurityPolicy: false,
 })); // Seguridad para la API
 app.use(morgan('dev')); // Logs de solicitudes HTTP en consola
 app.use(express.json()); // Habilitar JSON en el body de las requests
 app.use(express.urlencoded({ extended: true })); // Soporte para datos de formularios
-// Servir imágenes directamente desde carpeta uploads
-app.use('/uploads', express.static(path.join('/uploads')));
-// app.use(passport.initialize());
-//app.use('/imagenes', express.static(path.join(__dirname, 'imagenes'))); // Servir imágenes estáticas
 
 
 // Rutas de la API

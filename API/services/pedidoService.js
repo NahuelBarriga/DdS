@@ -1,10 +1,6 @@
 import repositoryMethods from "../repositories/pedidoRepository.js"; //metodos de comunicacion con la db
-import userMethods from './usersService.js';
-import mesaMethods from './mesaService.js';
-import pedidoResDTO from '../DTOs/pedidoResDTO.js'
-import { getIO } from '../config/socket.js';
+import pedidoDTO from '../DTOs/pedidoDTO.js'
 import db from '../database/index.js'
-import pedidoFormDTO from "../DTOs/pedidoFormDTO.js";
 
 const {Cliente, Mesa, Item} = db;
 
@@ -24,7 +20,7 @@ export const getAllPedidos = async ({ estado, clienteId, mesaId, fechaInicio, fe
             ]
         });
         // const cacheKey = 'pedidos';
-        return pedidos.map(pedido => new pedidoResDTO(pedido));
+        return pedidos.map(pedido => new pedidoDTO(pedido));
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching pedidos: ' + error.message);
@@ -44,7 +40,7 @@ export const getPedidoById = async(pedidoId) => {
         if (!pedido) {
             throw new Error('Pedido not found'); //! corregir el error que lanza
         }
-        return new pedidoResDTO(pedido);
+        return new pedidoDTO(pedido);
     } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
     }
@@ -60,7 +56,7 @@ export const actualizarPedidoState = async(pedidoId, estado) => {
         pedido.clienteId = pedido.cliente.id;
         pedido.mesaId = pedido.mesa.id;
         pedido.estado = estado.estado; //actualiza el estado
-        return await repositoryMethods.updatePedido(pedidoId, new pedidoFormDTO(pedido)); 
+        return await repositoryMethods.updatePedido(pedidoId, new pedidoDTO(pedido)); 
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
@@ -80,14 +76,14 @@ export const updatePedido = async(pedidoId, pedidoUpdate) => { //todo: ver si si
             { model: Mesa, as: 'mesa' ,attributes: ['id'] },
             { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
         ]
-        const pedido = new pedidoResDTO(await repositoryMethods.findPedidoById(pedidoId, include));
+        const pedido = new pedidoDTO(await repositoryMethods.findPedidoById(pedidoId, include));
         if (!pedido) {
             throw new Error('Pedido not found');
         }
 
         pedidoUpdate.clienteId = pedido.cliente.id; 
         pedidoUpdate.timestamp = pedido.timestamp; 
-        const response = await repositoryMethods.updatePedido(pedidoId, new pedidoFormDTO(pedidoUpdate)); 
+        const response = await repositoryMethods.updatePedido(pedidoId, new pedidoDTO(pedidoUpdate)); 
         console.log(response);
         return response;
     } catch (error) {

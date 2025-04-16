@@ -1,11 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from '../services/api';
-import clienteDTO from "../models/clienteDTO";
+import userDTO from "../models/userDTO";
 
 const AuthContext = createContext();
 const API_URL = `/auth`;
-
-
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Estado del usuario
@@ -82,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (email, password, nombre, telefono, cumpleanos) => { 
     try {
-      const usuario = new clienteDTO({email, password, nombre, telefono, cumpleanos});
+      const usuario = new userDTO({email, password, nombre, telefono, cumpleanos});
       const res = await api.post(`${API_URL}/register`, usuario); 
       console.log("res.data",res.data.user); //!sacar
       setToken(res.data.token); 

@@ -1,7 +1,5 @@
-import axios from "axios";
 import api from './api'; 
-import pedidoDTO from '../models/pedidoResDTO';
-import socket from "../config/socket";
+import pedidoDTO from '../models/pedidoDTO';
 import {API_PORT, MODO_PRUEBA} from '../config';
 
 const API_URL = `/pedidos`;
@@ -31,7 +29,7 @@ export const getPedidos = async () => {
 
 export const postReserva = async (reserva) => {
   try {
-    const response = await axios.post(`${API_URL}/reserva`, reserva);
+    const response = await api.post(`${API_URL}/reserva`, reserva);
     return response.data;
   } catch (error) {
     console.error("Error al crear la reserva:", error);
@@ -41,7 +39,7 @@ export const postReserva = async (reserva) => {
 
 export const patchReserva = async (id, updates) => {
   try {
-    const response = await axios.patch(`${API_URL}/reserva/${id}`, updates);
+    const response = await api.patch(`${API_URL}/reserva/${id}`, updates);
     return response.data;
   } catch (error) {
     console.error("Error al actualizar la reserva:", error);
@@ -51,7 +49,7 @@ export const patchReserva = async (id, updates) => {
 
 export const deleteReserva = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/reserva/${id}`);
+    const response = await api.delete(`${API_URL}/reserva/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error al eliminar la reserva:", error);

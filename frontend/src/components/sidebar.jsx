@@ -1,8 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from '../context/authContext';
 import { useState } from "react";
-import Modal from "./modal";
-import FormularioReserva from "./formularioReserva";
 
 function Sidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
@@ -62,13 +60,6 @@ function Sidebar({ isOpen, onClose }) {
           </div>
             
           </div>
-          {/* Modal de reserva */}
-      {mostrarModal && (
-        <Modal  className={"text-gray"} onClose={() => setMostrarModal(false)}>
-        <div titulo="Realizar una Reserva" className="p-3 text-gray-800">Realizar una Reserva </div>
-          <FormularioReserva onClose={() => setMostrarModal(false)} />
-        </Modal>
-      )}
     </>
   );
 }

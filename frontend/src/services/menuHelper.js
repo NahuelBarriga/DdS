@@ -1,6 +1,5 @@
 import api from './api';
-import ItemResDTO from '../models/itemResDTO';
-import ItemFormDTO from '../models/itemFormDTO';
+import ItemDTO from '../models/itemDTO';
 import {API_PORT, MODO_PRUEBA} from '../config';
 import { refresh } from './loginHelper';
 
@@ -20,7 +19,7 @@ export const getMenu = async () => {
   }
   try {
     const response = await api.get(`${API_URL}/menu`); 
-    return response.data.map(ItemResDTO.fromJson);
+    return response.data.map(ItemDTO.fromJson);
   } catch (error) {
     console.error("Error al obtener el menú:", error);
     return [];
@@ -42,7 +41,7 @@ export const getItemById = async (id) => {
 
 export const postItem = async(item) => { 
   try { 
-    const itemDTO = new ItemFormDTO(item);
+    const itemDTO = new ItemDTO(item);
     console.log(itemDTO); //!sacar
     const response = await api.post(API_URL, JSON.stringify(itemDTO));  
     return response; 
@@ -57,7 +56,7 @@ export const postItem = async(item) => {
 }
 export const updateItem = async (item) => {
   try {
-    const itemDTO = new ItemFormDTO(item);
+    const itemDTO = new ItemDTO(item);
     console.log(itemDTO);
     const response = await api.patch(`${API_URL}/${item.id}`, JSON.stringify(itemDTO));
 

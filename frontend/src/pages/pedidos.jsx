@@ -1,10 +1,9 @@
 import { getPedidos, confirmarORechazarPedido, getItemsMenu } from "../services/pedidoHelper";
 import { useEffect, useState } from "react";
-import socket from "../config/socket";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useAuth } from "../context/authContext";
-import PedidoResDTO from "../models/pedidoResDTO";
+import PedidoDTO from "../models/pedidoDTO";
 import { Trash2, Pencil, X, Filter, Plus, Minus } from "lucide-react";
 
 function Pedidos() {
@@ -21,17 +20,6 @@ function Pedidos() {
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const { user } = useAuth();
 
-  // Para el socket
-  useEffect(() => {
-    socket.on("pedido:estadoActualizado", ({ pedidoId, estado }) => {
-      setPedidos((prevPedidos) =>
-        prevPedidos.map((pedido) =>
-          pedido.id === pedidoId ? { ...pedido, estado } : pedido
-        )
-      );
-    });
-    return () => socket.off("pedidoActualizado");
-  }, []);
 
   useEffect(() => {
     async function fetchPedidos() {
@@ -46,29 +34,7 @@ function Pedidos() {
       }
     }
     fetchPedidos();
-
-    // Listener for real-time updates
-    socket.on("pedido:nuevo", (nuevoPedido) => {
-      setPedidos((prevPedidos) => 
-        [...prevPedidos, PedidoResDTO.fromJson(nuevoPedido)].sort((a, b) => {
-          const dateComparison = new Date(a.fecha) - new Date(b.fecha);
-          if (dateComparison !== 0) return dateComparison;
-          return a.hora.localeCompare(b.hora);
-        })
-      );
-      fetchPedidos();
-    });
-
-    socket.on("pedido:eliminado", (pedidoId) => { 
-      setPedidos((prevPedidos) =>
-        prevPedidos.filter((pedido) => pedido.id !== pedidoId)
-      );
-    });
-
-    return () => {
-      socket.off("pedido:nuevo");
-      socket.off("pedido:eliminado");
-    };
+    
   }, []);
 
   // Obtener los nombres de los ítems cuando se selecciona un pedido

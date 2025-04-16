@@ -1,18 +1,13 @@
-import pedidoFormDTO from "../DTOs/pedidoFormDTO.js";
+import pedidoDTO from "../DTOs/pedidoDTO.js";
 import pedidoMethods from "../services/pedidoService.js";
-//import pagoMethods from "./PagoService.js";
-import mesaMethods from "./mesaService.js"
 import itemMethods from "./itemService.js"
 import repositoryMethods from "../repositories/pedidoRepository.js";
-import coupons from '../db/coupons.json' with { type: "json" };
-import PedidoResDTO from "../DTOs/pedidoResDTO.js";
-import { getIO } from "../config/socket.js";
 
 
 
 export const createPedido = async(pedido, cargo) => { 
     try { 
-        const nuevoPedido = new pedidoFormDTO(pedido);
+        const nuevoPedido = new pedidoDTO(pedido);
         // if (cargo != 'cliente') { //lo hizo un empleado, se aprueba directo //viene del front
         //     nuevoPedido.estado = 'aprobado'; 
         // }

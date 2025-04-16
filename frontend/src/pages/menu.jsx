@@ -5,7 +5,6 @@ import ProductoModal from "../components/productoModal";
 import { useAuth } from "../context/authContext";
 import { useCarrito } from "../context/carrito";
 import Modal from "../components/modal";
-import socket from "../config/socket";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify"; // Assuming you're using react-toastify
 
@@ -89,27 +88,7 @@ function RenderMenu() {
         console.error("Error al cargar la información de mesa:", error);
       }
     }
-
-    // Configurar los listeners de Socket.io
-    const socketHandlers = {
-      menuActualizado: refresh,
-      nuevaReserva: refresh,
-      reservaEliminada: refresh,
-      reservaEditada: refresh,
-      itemActualizado: refresh
-    };
-
-    // Registrar todos los listeners
-    Object.entries(socketHandlers).forEach(([event, handler]) => {
-      socket.on(event, handler);
-    });
-
-    // Limpiar los listeners al desmontar
-    return () => {
-      Object.keys(socketHandlers).forEach(event => {
-        socket.off(event);
-      });
-    };
+   
   }, []);
 
   // Organizar el menú por categorías
@@ -146,9 +125,6 @@ function RenderMenu() {
       if (response.status === 200) {
         toast.success("Estado del ítem actualizado correctamente");
         
-        // Emitir evento de Socket para notificar cambio de stock
-        socket.emit("itemActualizado", { itemId: producto.id });
-        
         // Refrescar la interfaz
         refresh();
         setProductoSeleccionado(null);
@@ -166,10 +142,7 @@ function RenderMenu() {
       const response = await postItem(nuevoItem);
       if (response.status === 201) {
         toast.success("Ítem añadido con éxito");
-        
-        // Emitir evento de nuevo ítem
-        socket.emit("menuActualizado");
-        
+     
         handleCloseModal();
         refresh();
       }
@@ -195,9 +168,6 @@ function RenderMenu() {
       const response = await deleteItem(itemToDelete);
       if (response.status === 200) {
         toast.success("Ítem eliminado correctamente");
-        
-        // Emitir evento de menú actualizado
-        socket.emit("menuActualizado");
         
         setShowDeleteConfirm(false);
         setItemToDelete(null);
@@ -226,8 +196,6 @@ function RenderMenu() {
         toast.success("Ítem actualizado correctamente");
         setProductoSeleccionado(null);
         setMostrarModal(false); 
-        // Emitir evento de menú actualizado
-        socket.emit("menuActualizado");
         
         handleCloseModal();
         refresh();

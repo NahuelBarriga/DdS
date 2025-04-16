@@ -1,9 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import loginDTO from '../DTOs/authDTO.js';
 import repositoryMethods from '../repositories/usersRepository.js';
-import userService from '../services/usersService.js'
-import userFormDTO from '../DTOs/userFormDTO.js';
+// import userDTO from '../DTOs/userDTO.js'; //todo: meter
 
 
 
@@ -16,7 +14,7 @@ async function register(user) {
     // Encriptar contraseña
     user.password = await bcrypt.hash(user.password, 10);
 
-    const usuario = await repositoryMethods.saveUser(new userFormDTO(user));
+    const usuario = await repositoryMethods.saveUser(new userDTO(user));
     // Generar token JWT
     const token = generarToken(usuario);
     return { token, usuario: { id: usuario.id, email: usuario.email, cargo: usuario.cargo } }
