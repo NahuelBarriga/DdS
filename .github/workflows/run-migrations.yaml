@@ -1,9 +1,7 @@
 name: Run Sequelize Migrations
 
 on:
-  push:
-    branches:
-      - main  # or your deployment branch
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   migrate:
