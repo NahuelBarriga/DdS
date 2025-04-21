@@ -1,0 +1,35 @@
+name: Run Sequelize Migrations
+
+on:
+  push:
+    branches:
+      - main  # or your deployment branch
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      NODE_ENV: development
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23'  # or whatever version you use
+
+      - name: Install dependencies
+        working-directory: ./API
+        run: npm install
+
+      - name: Run Sequelize migrations
+        working-directory: ./API
+        run: npx sequelize-cli db:migrate
