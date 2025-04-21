@@ -1,0 +1,40 @@
+name: Build Docker Image
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+env:
+  IMAGE_NAME: virtual-pet-backend
+  COMMIT_SHA: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Move to backend directory
+        run: cd API
+
+      # Step 2: Set up Docker Buildx (for cross-platform builds and caching)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Log in to Docker Hub (optional, if pushing to Docker Hub)
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 4: Build the Docker image
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false  # Change to true if you want to push to Docker Hub
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
