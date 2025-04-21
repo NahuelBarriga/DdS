@@ -15,9 +15,6 @@ jobs:
       # Step 1: Checkout the code
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Move to backend directory
-        run: cd API
 
       # Step 2: Set up Docker Buildx (for cross-platform builds and caching)
       - name: Set up Docker Buildx
@@ -34,7 +31,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./API
           file: ./Dockerfile
           push: false  # Change to true if you want to push to Docker Hub
           tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
