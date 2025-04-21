@@ -2,7 +2,7 @@
 import { Sequelize, DataTypes } from '@sequelize/core';
 import process from 'process';
 const env = process.env.NODE_ENV || 'development';
-import config from '../config/config.json' with { type: "json" };
+import config from '../config/config.cjs';
 const db = {};
 const envConfig = config[env]
 
