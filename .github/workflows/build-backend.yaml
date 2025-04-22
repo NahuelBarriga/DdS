@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/virtual-pet-backend
+  IMAGE_NAME: ghcr.io/${GITHUB_REPOSITORY,,}/virtual-pet-backend
 
 jobs:
   build:

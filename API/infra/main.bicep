@@ -1,42 +1,44 @@
-@description('Virtual Pet API Bicep template')
-param appName string = 'virtual-pet-api-${uniqueString(resourceGroup().id)}'
+@description('Name of the container app environment')
+param envName string = 'virtual-pet-env'
 
-@description('Name of the Docker image, e.g. myrepo/myimage:tag')
+@description('Name of the container app')
+param appName string = 'virtual-pet-api'
+
+@description('Container image to deploy, e.g. myrepo/myimage:tag')
 param dockerImage string
 
-@description('Region for deployment')
+@description('Location for deployment')
 param location string = resourceGroup().location
 
-resource plan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'free-linux-plan'
+resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
+  name: envName
   location: location
-  sku: {
-    name: 'F1'
-    tier: 'Free'
-  }
-  kind: 'linux'
   properties: {
-    reserved: true
+    daprAIInstrumentationKey: ''
   }
 }
 
-resource webApp 'Microsoft.Web/sites@2022-03-01' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
-  kind: 'app,linux'
   properties: {
-    serverFarmId: plan.id
-    siteConfig: {
-      linuxFxVersion: 'DOCKER|${dockerImage}'
-      appSettings: [
+    managedEnvironmentId: containerEnv.id
+    configuration: {
+      ingress: {
+        external: true
+        targetPort: 3000 // change to your app's exposed port
+        transport: 'auto'
+      }
+    }
+    template: {
+      containers: [
         {
-          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
-          value: 'false'
+          name: 'api'
+          image: dockerImage
         }
       ]
     }
-    httpsOnly: true
   }
 }
 
-output appUrl string = 'https://${webApp.properties.defaultHostName}'
+output appUrl string = 'https://${containerApp.name}.${location}.azurecontainerapps.io'
