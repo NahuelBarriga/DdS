@@ -1,0 +1,35 @@
+name: Tear Down Azure Container App
+
+on:
+  workflow_dispatch:  # Allows manual trigger of the workflow from GitHub UI
+
+jobs:
+  teardown:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Set up Azure CLI
+        uses: azure/setup-azurecli@v1
+        with:
+          azure-cliv2-version: '2.37.0'  # Adjust to a specific version if necessary
+
+      - name: Authenticate to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Delete Azure Container App
+        run: |
+          echo "Deleting Azure Container App..."
+          az containerapp delete --name virtual-pet-backend --resource-group virtual-pet-backend --yes --no-wait
+        continue-on-error: true  # Continue even if the app doesn't exist or there's an issue
+
+      - name: Delete Azure Container App Environment (Optional)
+        run: |
+          echo "Deleting container app environment..."
+          az containerapp env delete --name virtual-pet-backend-env --resource-group virtual-pet-backend --yes --no-wait
+        continue-on-error: true  # Continue even if the environment doesn't exist or there's an issue
+
+      - name: Confirm Deletion
+        run: |
+          echo "The container app and associated resources have been deleted. Check the Azure Portal for confirmation."
