@@ -4,34 +4,53 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 env:
-  IMAGE_NAME: virtual-pet-backend
-  COMMIT_SHA: ${{ github.sha }}
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/virtual-pet-backend
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Docker Buildx (for cross-platform builds and caching)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-      # Step 3: Log in to Docker Hub (optional, if pushing to Docker Hub)
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./API
 
-      # Step 4: Build the Docker image
-      - name: Build Docker image
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image to GHCR
         uses: docker/build-push-action@v5
         with:
           context: ./API
           file: ./API/Dockerfile
-          push: false  # Change to true if you want to push to Docker Hub
-          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:latest
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Bicep to Azure
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: virtual-pet-backend
+          template: ./infra/main.bicep
+          parameters: |
+            appName=virtual-pet-api-${{ github.run_id }}
+            dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}
