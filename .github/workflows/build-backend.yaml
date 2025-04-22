@@ -51,6 +51,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Show dockerImage parameter
+        run: echo "dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}"
+
       - name: Deploy Bicep to Azure
         uses: azure/arm-deploy@v1
         with:
