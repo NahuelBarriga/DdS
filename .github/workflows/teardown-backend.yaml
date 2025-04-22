@@ -8,25 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Set up Azure CLI
-        uses: azure/setup-azurecli@v1
-
       - name: Authenticate to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Delete Azure Container App
-        run: |
-          echo "Deleting Azure Container App..."
-          az containerapp delete --name virtual-pet-backend --resource-group virtual-pet-backend --yes --no-wait
-        continue-on-error: true  # Continue even if the app doesn't exist or there's an issue
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            echo "Running Azure CLI commands to delete resources..."
+            # Delete the Azure Container App
+            az containerapp delete --name virtual-pet-backend --resource-group virtual-pet-backend --yes --no-wait
 
-      - name: Delete Azure Container App Environment (Optional)
-        run: |
-          echo "Deleting container app environment..."
-          az containerapp env delete --name virtual-pet-backend-env --resource-group virtual-pet-backend --yes --no-wait
-        continue-on-error: true  # Continue even if the environment doesn't exist or there's an issue
+      - name: Delete Azure Container App Environment
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            echo "Running Azure CLI commands to delete resources..."
+            # Delete the Azure Container App Environment
+            az containerapp env delete --name virtual-pet-backend-env --resource-group virtual-pet-backend --yes --no-wait
 
       - name: Confirm Deletion
         run: |
