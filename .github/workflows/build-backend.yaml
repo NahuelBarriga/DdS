@@ -3,6 +3,11 @@ name: Build Docker Image
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
