@@ -19,7 +19,7 @@ services:
     command: npm start
 
   db:
-    image: postgres:15
+    image: postgres:16
     container_name: virtual_pet_db
     environment:
       POSTGRES_USER: localuser
