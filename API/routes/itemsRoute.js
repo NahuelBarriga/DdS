@@ -5,7 +5,7 @@ import validateQueryParams from '../middlewares/validateQueryParams.js';
 const router = express.Router();
 
 // Get /api/items - obtiene todos los items
-// router.get('/', validateQueryParams.validateItemQueryParams, itemsMethods.getAllItems);
+router.get('/', validateQueryParams.validateItemQueryParams, itemsMethods.getAllItems);
 
 // Get /api/menu - obtiene todos los items en formato menu
 router.get('/menu',  itemsMethods.getMenu);

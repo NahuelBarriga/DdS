@@ -8,7 +8,8 @@ import categoriaDTO from "../DTOs/categoriaDTO.js";
 export const getAllItems = async({estado, categoria, precioMax, precioMin, tag}) => {
     try { 
         const items = await repositoryMethods.findItemsAll({estado, categoria, precioMax, precioMin, tag});
-        return items.map(item => new itemDTO(item));
+        let dtos = items.map(item => new itemDTO(item));
+        return dtos;
     } catch (error) {
         throw new Error('Error fetching Items: ' + error.message); //todo: ver error 
     }

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Pool from 'pg'; // Assuming you are using pg for PostgreSQL
 import db from '../database/index.js';
-import {prueba, dirDB} from '../config/devConfig.js'; 
+import {prueba, dirDB} from '../config/devConfig.js';
 
 const __dirname = dirDB; 
 const {Item} = db; 
@@ -33,13 +33,15 @@ const findItemsAll = async({estado, categoria, precioMax, precioMin, tag}) => {
          if (precioMin) whereClause.precio = { ...whereClause.precio, [Op.gte]: precioMin };
          if (tag) whereClause.tag = tag;
  
-         return await Item.findAll({ 
+         let response = await db.Item.findAll({ 
              where: whereClause,
              order: [
-             ['categoriaId', 'ASC'],
-             ['id', 'ASC']
+                ['categoriaId', 'ASC'],
+                ['id', 'ASC']
              ],
          });
+
+         return response;
        } catch (error) {
         
        }
@@ -51,7 +53,7 @@ const findItemById = async (itemId) => {
         const db = readDB();
         return db.items.find(item => item.id == itemId);
     } else {
-        return await Item.findByPk(itemId);
+        return await db.Item.findByPk(itemId);
     }
 };
 
@@ -60,7 +62,7 @@ const findItemByName = async (itemName) => {
         const db = readDB();
         return db.items.find(item => item.nombre == itemName);
     } else {
-        return await Item.findOne({ 
+        return await db.Item.findOne({ 
             where: {
                 nombre: itemName
             }
@@ -77,7 +79,7 @@ const saveItem = async (itemData) => {
         writeDB(db);
         return newItem;
     } else {
-        return await Item.create(itemData);
+        return await db.Item.create(itemData);
     }
 };
 
@@ -91,7 +93,7 @@ const updateItem = async (itemId, itemData) => {
         return db.items[itemIndex];
     } else {
         try {
-            return await Item.update(itemData, {
+            return await db.Item.update(itemData, {
                 where: {
                     id: itemId
                 }
@@ -116,7 +118,7 @@ const deleteItem = async (itemId) => {
         return deletedItem;
         
     } else {
-        return await Item.destroy({
+        return await db.Item.destroy({
             where: {
                 id: itemId
             }

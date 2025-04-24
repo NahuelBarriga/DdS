@@ -7,9 +7,15 @@ import { itemSchema } from '../validations/itemValidation.js';
 export const getAllItems = (req, res) => {
     try { 
         const {estado, categoria, precioMax, precioMin, tag} = req.query; 
-        const item = serviceMethods.getAllItems({estado, categoria, precioMax, precioMin, tag}); 
+        const item = serviceMethods.getAllItems({estado, categoria, precioMax, precioMin, tag})
+        .then((items) => {
+            res.json(items);
+        }
+        ).catch((error) => {
+            console.log(error);
+            res.status(500).json({ error: 'Error fetching items' });
+        });
         
-        res.json(item);
     } catch { 
         res.writeHead(500, 'server error'); 
         return res.end(); 
