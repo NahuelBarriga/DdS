@@ -31,3 +31,7 @@ jobs:
       - name: Run Sequelize migrations
         working-directory: ./API
         run: npx sequelize-cli db:migrate
+
+      - name: Run Sequelize seeders
+        working-directory: ./API
+        run: npx sequelize-cli db:seed:all
