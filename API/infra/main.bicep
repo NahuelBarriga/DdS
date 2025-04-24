@@ -18,6 +18,15 @@ resource containerEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
   }
 }
 
+@secure()
+param dbPassword string
+@secure()
+param dbUser string
+param dbName string
+@secure()
+param dbHost string
+param dbPort string = '5432'
+
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
@@ -35,6 +44,28 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
         {
           name: 'api'
           image: dockerImage
+          env: [
+            {
+              name: 'DB_USER'
+              value: dbUser
+            }
+            {
+              name: 'DB_PASSWORD'
+              value: dbPassword
+            }
+            {
+              name: 'DB_NAME'
+              value: dbName
+            }
+            {
+              name: 'DB_HOST'
+              value: dbHost
+            }
+            {
+              name: 'DB_PORT'
+              value: dbPort
+            }
+          ]
         }
       ]
     }
