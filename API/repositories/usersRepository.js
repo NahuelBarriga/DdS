@@ -1,10 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import Pool from 'pg';
-import db from '../database/index.js';
+
 import {prueba, dirDB} from '../config/devConfig.js'; 
 
-const { User } = db; //todo: arreglar todo esto
+import db from '../database/index.js';
 
 const __dirname = dirDB;
 
@@ -14,7 +13,6 @@ const readDB = () => {
     const data = fs.readFileSync(dbFilePath);
     return JSON.parse(data);
 };
-
 
 
 const writeDB = (data) => {
@@ -49,7 +47,7 @@ const findUserById = async (userId) => { //empleado entran por aca, ver si es ne
         return db.users.find(user => user.id === userId);
     } else {
         try {
-            return await User.findByPk(userId); //todo: ver como no compartir la contraseña
+            return await db.User.findByPk(userId); //todo: ver como no compartir la contraseña
         } catch (error) {
             console.log(error); 
             throw new Error('Error fetching usuarios: ' + error.message);
@@ -62,9 +60,9 @@ const findUserByEmail = async (userEmail) => {
         const db = await readDB();
         return db.users.find(user => user.email === userEmail);
     } else {
+        console.log("Buscando usuario por email: ", userEmail);
         try {
-
-            return await User.findOne({ where: { email: userEmail } });
+            return await db.User.findOne({ where: { email: userEmail } });
         } catch (error) {
             console.log(error); 
             throw new Error('Error fetching usuarios: ' + error.message);
@@ -80,8 +78,9 @@ const saveUser = async (userData) => {
         await writeDB(db);
         return newUser;
     } else {
+        console.log("Creando usuario: ", userData);
         try {
-            return await User.create(userData); 
+            return await db.User.create(userData); 
         } catch (error) {
             console.log(error); 
             throw new Error('Error saving usuario: ' + error.message);
@@ -101,7 +100,7 @@ const deleteUser = async (userId) => {
         return null;
     } else {
         try {
-            return await User.destroy({
+            return await db.User.destroy({
                 where: {
                     id:userId
                 }
@@ -125,7 +124,7 @@ const updateUser = async (userId, updateData) => {
         return null;
     } else {
         try { 
-            return await User.update(updateData, { 
+            return await db.User.update(updateData, { 
                 where : { id: userId } 
             });
         } catch (error) { 
@@ -142,7 +141,7 @@ const findUserByResetToken = async (token) => {
     } else {
         //const query = `SELECT * FROM User WHERE reset_token = $1 AND reset_token_expiration > NOW()`;
         try {
-            return await User.findOne({ where: { reset_token: token, reset_token_expiration: { [Op.gt]: new Date() } } });
+            return await db.User.findOne({ where: { reset_token: token, reset_token_expiration: { [Op.gt]: new Date() } } });
         } catch (error) {
             console.log(error); 
             throw new Error('Error fetching usuarios: ' + error.message);
@@ -152,7 +151,7 @@ const findUserByResetToken = async (token) => {
 
 const findUserByToken = async(token) => { 
     try {
-        return await User.findOne({ where: { reset_token: token, reset_token_expiration: { [Op.gt]: new Date() } } });
+        return await db.User.findOne({ where: { reset_token: token, reset_token_expiration: { [Op.gt]: new Date() } } });
     } catch (error) {
         console.log(error); 
         throw new Error('Error fetching usuarios: ' + error.message);
@@ -174,7 +173,7 @@ const updatePassword = async (userId, updateData) => {
     } else {
         //const query = `UPDATE User SET contrasena = $1, reset_token = NULL, reset_token_expiration = NULL WHERE email = $2`;
         try { 
-            return await User.update(updateData, { 
+            return await db.User.update(updateData, { 
                 where : { id: userId } 
             });
         } catch (error) { 

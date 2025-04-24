@@ -25,12 +25,14 @@ import ItemModel from './models/item.js';
 import CategoriaModel from './models/categoria.js';
 import PedidoModel from './models/pedido.js';
 import PedidoItemModel from './models/pedidoitem.js'
+import UserModel from './models/user.js';
 
 // const Empleado = EmpleadoModel(sequelize, DataTypes);
 const Item = ItemModel(sequelize, DataTypes);
 const Categoria = CategoriaModel(sequelize, DataTypes);
 const Pedido = PedidoModel(sequelize, DataTypes);
 const PedidoItem = PedidoItemModel(sequelize, DataTypes);
+const User = UserModel(sequelize, DataTypes);
 
 
 
@@ -80,5 +82,6 @@ db.Item = Item;
 db.Categoria = Categoria;
 db.PedidoItem = PedidoItem;
 db.Pedido = Pedido;
+db.User = User;
 
 export default db;
