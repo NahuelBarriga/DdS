@@ -60,7 +60,11 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: virtual-pet-backend
           template: ./API/infra/main.bicep
-          parameters: appName=virtual-pet-api-${{ github.run_id }} dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            dbUser=${{ secrets.DB_USER }} dbPassword=${{ secrets.DB_PASSWORD }} dbName=${{ secrets.DB_NAME }} \
+          parameters: |
+            appName=virtual-pet-api-${{ github.run_id }}
+            dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}
+            dbUser=${{ secrets.DB_USER }}
+            dbPassword=${{ secrets.DB_PASSWORD }}
+            dbName=${{ secrets.DB_NAME }}
             dbHost=${{ secrets.DB_HOST }}
           
