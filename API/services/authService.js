@@ -37,7 +37,7 @@ async function login(email, password) {
         // Generar token JWT
         const token = generarToken(usuario);
         //const refreshToken = generarRefreshToken(usuario); 
-        return { token, /*refreshToken,*/ usuario: { id: usuario.id, email: usuario.email, cargo: usuario.cargo } };
+        return { token, /*refreshToken,*/ usuario: { id: usuario.id, email: usuario.email, cargo: usuario.role } };
     } catch (error) {
         console.log(error); 
         throw new Error('Error fetching user: ' + error.message); 
