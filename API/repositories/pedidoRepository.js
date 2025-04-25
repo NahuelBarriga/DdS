@@ -30,7 +30,6 @@ const getAll = async (filter) => {
             const whereClause = {};
             if (filter.estado) whereClause.estado = filter.estado;
             if (filter.clienteId) whereClause.clienteId = filter.clienteId;
-            if (filter.mesaId) whereClause.mesaId = filter.mesaId;
             if (filter.fechaInicio) whereClause.timestamp = { ...whereClause.date, [Op.gte]: filter.fechaInicio };
             if (filter.fechaFin) whereClause.timestamp = { ...whereClause.date, [Op.lte]: filter.fechaFin };
             return await Pedido.findAll({ 
