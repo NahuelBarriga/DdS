@@ -78,7 +78,6 @@ const saveUser = async (userData) => {
         await writeDB(db);
         return newUser;
     } else {
-        console.log("Creando usuario: ", userData);
         try {
             return await db.User.create(userData); 
         } catch (error) {
