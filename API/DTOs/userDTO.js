@@ -1,8 +1,8 @@
 class userDTO {  //! acomodar esto, esta copypasteado de authDTO
-    constructor({id, nombre, cargo}) { 
+    constructor({id, name, role}) { 
             this.id = Number(id);
-            this.nombre = String(nombre);   
-            this.cargo = String(cargo);
+            this.nombre = String(name);   
+            this.cargo = String(role);
     }
 }
 
