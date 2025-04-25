@@ -28,6 +28,10 @@ export default(sequelize, DataTypes) => {
     imagenId: { 
       type: DataTypes.INTEGER, 
       allowNull: true, 
+    },
+    imageURL: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };

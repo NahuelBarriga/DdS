@@ -7,9 +7,6 @@ const router = express.Router();
 // Get /api/items - obtiene todos los items
 router.get('/', validateQueryParams.validateItemQueryParams, itemsMethods.getAllItems);
 
-// Get /api/menu - obtiene todos los items en formato menu
-router.get('/menu',  itemsMethods.getMenu);
-
 // GET /api/categorias - obtiene todas las categorias
 router.get('/categorias', itemsMethods.getAllCategorias); //todo: si no va antes del get/id explota todo, solucionar
 

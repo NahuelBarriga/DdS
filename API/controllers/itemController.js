@@ -20,19 +20,6 @@ export const getAllItems = (req, res) => {
         res.writeHead(500, 'server error'); 
         return res.end(); 
     }
-} 
-
-export const getMenu = async (req, res) => {
-    try { 
-        const item = await serviceMethods.getMenu(); 
-        // res.writeHead(200, 'ok'); 
-        console.log(item); //!sacar
-        res.json(item);
-    } catch { 
-        
-        res.writeHead(500, 'server error'); 
-        return res.end(); 
-    }
 }
 
 export const getItemById = async (req, res) => {
@@ -149,7 +136,6 @@ export const updateItemStock = async (req, res) => {
 
 export default {
     createItem,
-    getMenu,
     getItemById,
     getAllItems,
     updateItem,
