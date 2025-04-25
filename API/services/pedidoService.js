@@ -2,20 +2,18 @@ import repositoryMethods from "../repositories/pedidoRepository.js"; //metodos d
 import pedidoDTO from '../DTOs/pedidoDTO.js'
 import db from '../database/index.js'
 
-const {Cliente, Mesa, Item} = db;
+const {Cliente, Item} = db;
 
 // Get all pedidos
-export const getAllPedidos = async ({ estado, clienteId, mesaId, fechaInicio, fechaFin }) => {
+export const getAllPedidos = async ({ estado, clienteId, fechaInicio, fechaFin }) => {
     try {
         const pedidos = await repositoryMethods.getAll({
             estado,
             clienteId,
-            mesaId,
             fechaInicio,
             fechaFin,
             include: [
                 {model: Cliente, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
-                { model: Mesa, as: 'mesa' ,attributes: ['id'] },
                 { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
             ]
         });
@@ -33,7 +31,6 @@ export const getPedidoById = async(pedidoId) => {
         const pedido = await repositoryMethods.findPedidoById(pedidoId, {
             include: [
                 {model: Cliente, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
-                { model: Mesa, as: 'mesa' ,attributes: ['id'] },
                 { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
             ]
         });
@@ -54,7 +51,6 @@ export const actualizarPedidoState = async(pedidoId, estado) => {
             throw new Error('Pedido not found'); //! corregir el error que lanza
         }
         pedido.clienteId = pedido.cliente.id;
-        pedido.mesaId = pedido.mesa.id;
         pedido.estado = estado.estado; //actualiza el estado
         return await repositoryMethods.updatePedido(pedidoId, new pedidoDTO(pedido)); 
     } catch (error) {
@@ -72,7 +68,6 @@ export const updatePedido = async(pedidoId, pedidoUpdate) => { //todo: ver si si
     try {
         const include = [
             {model: Cliente, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
-            { model: Mesa, as: 'mesa' ,attributes: ['id'] },
             { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
         ]
         const pedido = new pedidoDTO(await repositoryMethods.findPedidoById(pedidoId, include));

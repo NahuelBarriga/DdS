@@ -8,10 +8,6 @@ export const pedidoSchema = Joi.object({
   clienteNombre: Joi.string().max(30).allow("").required().messages({
     "any.required": "El cliente es obligatorio."
   }),
-  mesaId: Joi.number().integer().required().messages({
-    "number.base": "El ID de la mesa debe ser un número.",
-    "any.required": "La mesa es obligatoria."
-  }),
   items: Joi.array()
     .items(
       Joi.object({
@@ -25,7 +21,6 @@ export const pedidoSchema = Joi.object({
       "array.min": "Debe haber al menos un ítem en el pedido.",
       "any.required": "Los ítems son obligatorios."
     }),
-  comentario: Joi.string().max(255).allow("").optional(),
   timestamp: Joi.date().required(),
   total: Joi.number().positive().required(),
   estado: Joi.string().valid("pendiente", "confirmado", "rechazado", "pago", "finalizado").required(),
