@@ -120,11 +120,9 @@ const savePedido = async (pedidoData) => {
         try {
             const nuevoPedido = await Pedido.create({ 
                 clienteId: pedidoData.clienteId,
-                mesaId: pedidoData.mesaId,
                 comentario: pedidoData.comentario,
                 subtotal: pedidoData.subtotal,
                 total: pedidoData.total,
-                coupon: pedidoData.coupon,
                 estado: pedidoData.estado,
                 timestamp: pedidoData.timestamp,
             }); 
@@ -136,7 +134,6 @@ const savePedido = async (pedidoData) => {
 
             await PedidoItem.bulkCreate(itemsPedido);
             return nuevoPedido;
-
         } catch (error) {
             console.error(error);
             throw new Error('Error al crear el pedido: ' + error.message);

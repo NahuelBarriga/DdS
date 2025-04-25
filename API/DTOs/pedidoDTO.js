@@ -2,7 +2,6 @@ class PedidoDTO {
     constructor({id, total, estado, timestamp, cliente, items}) {
         this.id = Number(id); 
         this.items = Array.isArray(items) ? items.map((item) => ({
-            
             id: Number(item.id),
             nombre: String(item.nombre), 
             precio: Number(item.precio),

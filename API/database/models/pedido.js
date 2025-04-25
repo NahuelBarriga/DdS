@@ -25,15 +25,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    coupon: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    mesaId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
-
   });
   
 };

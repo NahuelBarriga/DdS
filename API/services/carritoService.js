@@ -1,13 +1,13 @@
-import pedidoDTO from "../DTOs/pedidoDTO.js";
 import pedidoMethods from "../services/pedidoService.js";
 import itemMethods from "./itemService.js"
 import repositoryMethods from "../repositories/pedidoRepository.js";
+import PedidoDTO from "../DTOs/pedidoDTO.js";
 
 
 
 export const createPedido = async(pedido) => { 
     try { 
-        const nuevoPedido = new pedidoDTO(pedido);
+        const nuevoPedido = new PedidoDTO(pedido);
         if (!compruebaItems(nuevoPedido.items)) {//chequea que haya stock de todos los items, por si estaba en carrito y despues se saco 
             throw new Error('Error en los items del pedido'); //! corregir el error que lanza
         }
@@ -15,7 +15,6 @@ export const createPedido = async(pedido) => {
         const pedidoNuevo =  await repositoryMethods.savePedido(nuevoPedido);
         getIO().emit("pedido:nuevo", (await pedidoMethods.getPedidoById(pedidoNuevo.id)));  //ya viene con DTO 
         return pedidoNuevo; 
-
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
@@ -68,7 +67,6 @@ async function addItemsToPedido(pedido, items) {  //todo: ver esto pq en realida
 
     } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
-        throw new Error('Error creating pedido: ' + error.message); //! corregir el error que lanza
     }
 }
 
