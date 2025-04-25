@@ -60,7 +60,6 @@ export const actualizarPedidoState = async(pedidoId, estado) => {
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
-        throw new Error('Error creating pedido: ' + error.message); //! corregir el error que lanza
     }
 }
 

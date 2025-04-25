@@ -5,12 +5,9 @@ import repositoryMethods from "../repositories/pedidoRepository.js";
 
 
 
-export const createPedido = async(pedido, cargo) => { 
+export const createPedido = async(pedido) => { 
     try { 
         const nuevoPedido = new pedidoDTO(pedido);
-        // if (cargo != 'cliente') { //lo hizo un empleado, se aprueba directo //viene del front
-        //     nuevoPedido.estado = 'aprobado'; 
-        // }
         if (!compruebaItems(nuevoPedido.items)) {//chequea que haya stock de todos los items, por si estaba en carrito y despues se saco 
             throw new Error('Error en los items del pedido'); //! corregir el error que lanza
         }

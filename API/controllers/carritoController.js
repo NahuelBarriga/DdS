@@ -5,16 +5,9 @@ import serviceMethods from '../services/carritoService.js';
 export const createPedido = async (req, res) => { 
     try {
         req.body.clienteId = req.user.id; 
-        if (mesa) { 
-            req.body.mesaId = mesa.id; //ver si existe la mesa
-            const newPedido = await serviceMethods.createPedido(req.body, req.user.cargo); 
-            res.writeHead(201, 'ok'); 
-            return res.end(); 
-        } else { 
-            res.writeHead(500, 'server error'); //si fallo algo en el server
-            return res.end();
-        }
-        // return res.end(JSON.stringify(newPedido)); 
+        const newPedido = await serviceMethods.createPedido(req.body); 
+        res.writeHead(201, 'ok'); 
+        return res.end(JSON.stringify(newPedido)); 
     } catch (error) {
         console.log(error);
         res.writeHead(500, 'server error'); //si fallo algo en el server
