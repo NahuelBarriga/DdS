@@ -12,7 +12,8 @@ class PedidoDTO {
             nombre: cliente.nombre,
             //apellido: cliente.apellido,
         } : null;
-        this.timestamp = new Date(timestamp.getTime() - timestamp.getTimezoneOffset() * 60000);
+        this.timestamp = new Date(new Date(timestamp).getTime() - new Date(timestamp).getTimezoneOffset() * 60000);
+        //this.timestamp = new Date(timestamp.getTime() - timestamp.getTimezoneOffset() * 60000);
         this.total = Number(total); //se calcula automaticamente en funcion de los items
         this.estado = String(estado); 
     }

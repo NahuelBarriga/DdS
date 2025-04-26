@@ -1,4 +1,5 @@
-import fs from 'fs';
+//import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
 import Pool from 'pg'; // Assuming you are using pg for PostgreSQL
 import {prueba, dirDB} from '../config/devConfig.js'; 
@@ -110,10 +111,17 @@ const updatePedido = async (pedidoId, pedidoData) => {
 const savePedido = async (pedidoData) => {
     if (prueba) {
         const data = await fs.readFile(dbFilePath, 'utf8');
-        const pedidos = JSON.parse(data);
-        const newPedido = { id: pedidos.length + 1, ...pedidoData };
+        const db = JSON.parse(data); // db es el objeto completo
+
+        const pedidos = db.pedidos || []; // ahora sí, pedidos es el array correcto
+
+        const newPedido = { ...pedidoData, id: pedidos.length + 1 };
         pedidos.push(newPedido);
-        await fs.writeFile(dbFilePath, JSON.stringify(pedidos, null, 2));
+
+        // Actualizás el objeto principal
+        db.pedidos = pedidos;
+
+        await fs.writeFile(dbFilePath, JSON.stringify(db, null, 2));
         return newPedido;
     } else {
         try {
@@ -144,11 +152,15 @@ const savePedido = async (pedidoData) => {
 const deletePedido = async (pedidoId) => {
     if (prueba) {
         const data = await fs.readFile(dbFilePath, 'utf8');
-        const pedidos = JSON.parse(data);
-        const index = pedidos.findIndex(pedido => pedido.id === pedidoId);
+        const parsedData = JSON.parse(data); 
+        const pedidos = parsedData.pedidos;  
+        const index = pedidos.findIndex(pedido => pedido.id == pedidoId);
+        console.log(index);
         if (index !== -1) {
             const deletedPedido = pedidos.splice(index, 1)[0];
-            await fs.writeFile(dbFilePath, JSON.stringify(pedidos, null, 2));
+            console.log(deletedPedido);
+            parsedData.pedidos = pedidos;
+            await fs.writeFile(dbFilePath, JSON.stringify(parsedData, null, 2));
             return deletedPedido;
         }
         return null;

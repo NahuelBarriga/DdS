@@ -13,7 +13,7 @@ export const createPedido = async(pedido) => {
         }
         
         const pedidoNuevo =  await repositoryMethods.savePedido(nuevoPedido);
-        getIO().emit("pedido:nuevo", (await pedidoMethods.getPedidoById(pedidoNuevo.id)));  //ya viene con DTO 
+        //getIO().emit("pedido:nuevo", (await pedidoMethods.getPedidoById(pedidoNuevo.id)));  //ya viene con DTO 
         return pedidoNuevo; 
     } catch (error) {
         console.log(error);
@@ -37,7 +37,7 @@ const compruebaItems = async (items) => {
 
 export const cancelarPedidoPendiente = async(pedidoId) => { 
     try {
-        getIO().emit("pedido:eliminado", (pedidoId)); 
+        //getIO().emit("pedido:eliminado", (pedidoId)); 
         return await pedidoMethods.deletePedido(pedidoId);
     } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza

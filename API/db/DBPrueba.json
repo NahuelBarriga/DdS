@@ -119,6 +119,13 @@
       "id": 4,
       "email": "pepe@pepe.com",
       "password": "$2a$10$LxotaQ22soxcDTO9vUN9tuPB7l57xYeENShf8mktxJHfIXynKTamC"
+    },
+    {
+      "id": 5,
+      "email": "user@mail.com",
+      "password": "$2a$10$YkXlqnmpd1iZZltRL8mCbu1dGIdIcotR335sxPu2pKn4h144Tzih2",
+      "name": "user",
+      "role": "client"
     }
   ],
   "pedidos": [

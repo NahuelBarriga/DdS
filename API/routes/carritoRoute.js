@@ -11,9 +11,6 @@ router.post('/', authMiddleware ,carritoMethods.createPedido);
 //DELETE api/pedidos/{id} - elimina un pedido pendiente
 router.delete('/pedidos/:id', authMiddleware, carritoMethods.cancelarPedidoPendiente); 
 
-//GET api/carrito/mesa/{id} - obtiene boolean dependiendo si la mesa esta o no disponible
-router.get('/mesa/:id', authMiddleware, carritoMethods.verificarMesaDisponible);
-
 //GET api/carrito/pedidos/cliente/{id} - obtiene los pedidos pendientes para un usuario con determinado id
 router.get('/pedidos/cliente/:id', authMiddleware, carritoMethods.getPedidosPendientes); 
 
