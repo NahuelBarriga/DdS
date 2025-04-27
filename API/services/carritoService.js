@@ -70,15 +70,15 @@ async function addItemsToPedido(pedido, items) {  //todo: ver esto pq en realida
     }
 }
 
-async function addCouponToPedido(pedido, coupon) {  //todo: acomodar
-    try {
-        pedido.coupon = coupon;
-        //todo: validar el cupon y guardar directamente en el campo de coupon del pedido el porcentaje de descuento
-        return pedido;
-    } catch (error) {
-        throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
-    }
-}
+// async function addCouponToPedido(pedido, coupon) {  //todo: acomodar
+//     try {
+//         pedido.coupon = coupon;
+//         //todo: validar el cupon y guardar directamente en el campo de coupon del pedido el porcentaje de descuento
+//         return pedido;
+//     } catch (error) {
+//         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
+//     }
+// }
 
 // obtiene el total a pagar  
 async function getTotal(pedidos) { //entra un objeto de pedidos 
@@ -102,14 +102,14 @@ async function getTotal(pedidos) { //entra un objeto de pedidos
     }
 }
 
-export const verificarMesaDisponible = async (mesaNumero) => { 
-    try {
-        const mesa = await mesaMethods.getMesaByNumero(mesaNumero);
-        return (mesa.estado === 'ocupada');      
-    } catch (error) {
-        throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
-    }
-}
+// export const verificarMesaDisponible = async (mesaNumero) => { 
+//     try {
+//         const mesa = await mesaMethods.getMesaByNumero(mesaNumero);
+//         return (mesa.estado === 'ocupada');      
+//     } catch (error) {
+//         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
+//     }
+// }
 
 export const getPedidosPendientes = async(clienteId) => {  
     try {
@@ -137,11 +137,11 @@ export const getPedidosPendientes = async(clienteId) => {
 
 export default  {
     getPedidosPendientes,
-    addCouponToPedido,
+    //addCouponToPedido,
     addItemsToPedido,
     createPedido,
     pagarPedido,
     getTotal,
-    verificarMesaDisponible,
+    //verificarMesaDisponible,
     cancelarPedidoPendiente,
 };
