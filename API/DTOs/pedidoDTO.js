@@ -1,6 +1,6 @@
 class PedidoDTO {
     constructor({id, total, estado, timestamp, cliente, items}) {
-        this.id = Number(id); 
+        this.id = id ? id: null; 
         this.items = Array.isArray(items) ? items.map((item) => ({
             id: Number(item.id),
             nombre: String(item.nombre), 
@@ -12,7 +12,7 @@ class PedidoDTO {
             nombre: cliente.nombre,
             //apellido: cliente.apellido,
         } : null;
-        this.timestamp = new Date(new Date(timestamp).getTime() - new Date(timestamp).getTimezoneOffset() * 60000);
+        this.timestamp = timestamp ? timestamp: new Date(new Date(timestamp).getTime() - new Date(timestamp).getTimezoneOffset() * 60000);
         //this.timestamp = new Date(timestamp.getTime() - timestamp.getTimezoneOffset() * 60000);
         this.total = Number(total); //se calcula automaticamente en funcion de los items
         this.estado = String(estado); 
