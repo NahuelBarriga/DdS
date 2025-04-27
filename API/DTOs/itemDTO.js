@@ -1,6 +1,6 @@
 class ItemDTO {
     constructor({id, nombre, descripcion, precio, categoriaId, tag, stock, imageURL}) {
-        this.id = Number(id); //se asigna automaticamente en la db
+        this.id = Number(id) ? id : null; //se asigna automaticamente en la db
         this.nombre = String(nombre);
         this.descripcion = String(descripcion);
         this.precio = Number(precio);
