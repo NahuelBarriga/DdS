@@ -13,7 +13,6 @@ export const getAllPedidos = async ({ estado, clienteId, fechaInicio, fechaFin }
             fechaInicio,
             fechaFin,
             include: [
-                {model: Cliente, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
                 { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
             ]
         });

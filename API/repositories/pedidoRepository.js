@@ -126,9 +126,7 @@ const savePedido = async (pedidoData) => {
     } else {
         try {
             const nuevoPedido = await Pedido.create({ 
-                clienteId: pedidoData.clienteId,
-                comentario: pedidoData.comentario,
-                subtotal: pedidoData.subtotal,
+                clienteId: pedidoData.cliente.id,
                 total: pedidoData.total,
                 estado: pedidoData.estado,
                 timestamp: pedidoData.timestamp,

@@ -16,7 +16,7 @@ router.get('/pedidos/cliente/:id', authMiddleware, carritoMethods.getPedidosPend
 
 //POST api/carrito/pago - dispara el pago de los pedidos pendientes
 router.post('/pago', authMiddleware, carritoMethods.pagarPedido); 
-
+//! ESTO NO ES NECESARIO PARA EL MVP
 
 
 

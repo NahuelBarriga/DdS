@@ -1,4 +1,4 @@
-export const prueba = true;
+export const prueba = false;
 export const dirDB = './db'
 
 

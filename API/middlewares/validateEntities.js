@@ -114,14 +114,8 @@ export const validatePedido = (pedidoDTO) => {
     if (!pedidoDTO.clienteId) {
         throw new Error('ClienteId is required');
     }
-    if (!pedidoDTO.mesaId) {
-        throw new Error('MesaId is required');
-    }
     if (!pedidoDTO.items || pedidoDTO.items.length === 0) {
         throw new Error('Items are required');
-    }
-    if (!pedidoDTO.subtotal || pedidoDTO.subtotal <= 0) {
-        throw new Error('Subtotal is required');
     }
     return true;
 }

@@ -17,10 +17,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false
     },
-    subtotal: {
-      type: DataTypes.FLOAT,
-      allowNull: false
-    },
     comentario: {
       type: DataTypes.STRING,
       allowNull: true
