@@ -7,7 +7,9 @@ class ItemDTO {
         this.categoriaId = Number(categoriaId);
         this.stock = stock !== undefined ? Boolean(stock) : true;
         this.tag = String(tag); 
-        this.imagen = imageURL; //?URL de imagen?
+        this.imagen = [
+            String(imageURL)
+        ]; //?URL de imagen?
     }
 }
 
