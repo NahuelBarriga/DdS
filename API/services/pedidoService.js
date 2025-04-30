@@ -2,7 +2,7 @@ import repositoryMethods from "../repositories/pedidoRepository.js"; //metodos d
 import pedidoDTO from '../DTOs/pedidoDTO.js'
 import db from '../database/index.js'
 
-const {Cliente, Item} = db;
+const {User, Item} = db;
 
 // Get all pedidos
 export const getAllPedidos = async ({ estado, clienteId, fechaInicio, fechaFin }) => {
@@ -13,10 +13,10 @@ export const getAllPedidos = async ({ estado, clienteId, fechaInicio, fechaFin }
             fechaInicio,
             fechaFin,
             include: [
-                { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
+                { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } }, // Evita datos innecesarios de la tabla intermedia,
+                { model: User, as: 'cliente', attributes: ['id', 'name'] } // Evita datos innecesarios de la tabla intermedia
             ]
         });
-        // const cacheKey = 'pedidos';
         return pedidos.map(pedido => new pedidoDTO(pedido));
     } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ export const getPedidoById = async(pedidoId) => {
     try {
         const pedido = await repositoryMethods.findPedidoById(pedidoId, {
             include: [
-                {model: Cliente, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
+                {model: User, as: 'cliente', attributes: ['id', 'nombre', 'telefono'] },
                 { model: Item, as: 'items' ,attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } } // Evita datos innecesarios de la tabla intermedia
             ]
         });

@@ -49,6 +49,14 @@ Pedido.belongsToMany(Item, {
   as: 'items'
 });
 
+Pedido.belongsTo(User, {
+  foreignKey: {
+    name: 'clienteId',
+    allowNull: false
+  },
+  as: 'cliente'
+});
+
 Item.belongsToMany(Pedido, {
   through: PedidoItem,
   foreignKey: {
