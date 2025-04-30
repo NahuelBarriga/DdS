@@ -106,7 +106,7 @@ export const deletePedido = async(req, res) => {
     }
 }
 
-export const getPedidosByUserId = async(req, res) => { 
+export const getPedidosByUserId = async(req, res) => {
     try {
         const pedidos = await serviceMethods.getPedidosByUserId(req.user.id); 
         if (!pedidos) {

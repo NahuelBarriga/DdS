@@ -95,6 +95,7 @@ export const deletePedido = async(pedidoId) => {
 }
 
 export const getPedidosByUserId = async(clienteId) => { 
+    console.log("service")
     try {
         const pedidos = await repositoryMethods.getPedidosByUserId(clienteId); 
         if (!pedidos) {

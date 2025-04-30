@@ -177,10 +177,32 @@ const deletePedido = async (pedidoId) => {
     }
 };
 
+const getPedidosByUserId = async (userId) => {
+    if (prueba) {
+        const data = await fs.readFile(dbFilePath, 'utf8');
+        const pedidos = JSON.parse(data);
+        return pedidos.filter(pedido => pedido.clienteId === userId);
+    } else {
+        try {
+            return await Pedido.findAll({
+                where: { clienteId: userId },
+                order: [['createdAt', 'DESC']],
+                include: [
+                    { model: db.Item, as: 'items', attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } }
+                ]
+            });
+        } catch (error) {
+            console.log(error); 
+            throw new Error('Error fetching reservas: ' + error.message);
+        }
+    }
+}
+
 export default {
     getAll,
     findPedidoById,
     updatePedido,
     savePedido,
-    deletePedido
+    deletePedido,
+    getPedidosByUserId
 };

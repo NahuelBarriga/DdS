@@ -9,6 +9,8 @@ const router = express.Router();
 // GET /api/pedidos - obtiene todos los pedidos 
 router.get('/', validateQueryParams.validatePedidoQueryParams, pedidoMethods.getAllPedidos);
 
+router.get('/user', authMiddleware, pedidoMethods.getPedidosByUserId); //obtiene todos los pedidos de un usuario segun su ID
+
 // GET /api/pedido/{id} - obtener un pedido especifico 
 router.get('/:id', pedidoMethods.getPedidoById);
 
@@ -18,9 +20,6 @@ router.patch('/:id', pedidoMethods.updatePedido);
 
 // DELETE /api/pedido/{id} - borra un pedido segun ID
 router.delete('/:id', pedidoMethods.deletePedido);
-
-// Este parametro deberia sacarse del JWT, pero bueno, es para llegar al MVP
-router.get('/user', authMiddleware, pedidoMethods.getPedidosByUserId); //obtiene todos los pedidos de un usuario segun su ID
 
 // //PUT estado /api/pedido/{id}/estado 
 // router.put('/:id/estado', pedidoMethods.updateEstadoPedido); //se usa para confirmar, rechazar o pagar el pedido 
