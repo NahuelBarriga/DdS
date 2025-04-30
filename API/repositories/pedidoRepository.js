@@ -128,8 +128,9 @@ const savePedido = async (pedidoData) => {
             const nuevoPedido = await Pedido.create({ 
                 clienteId: pedidoData.cliente.id,
                 total: pedidoData.total,
+                subtotal: pedidoData.total, //? esto deberia fixearse
                 estado: pedidoData.estado,
-                timestamp: pedidoData.timestamp,
+                timestamp: new Date(),
             }); 
             const itemsPedido = pedidoData.items.map(item => ({
                 pedidoId: nuevoPedido.id, // ID del pedido recién creado
