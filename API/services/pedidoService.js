@@ -94,6 +94,18 @@ export const deletePedido = async(pedidoId) => {
     }
 }
 
+export const getPedidosByUserId = async(clienteId) => { 
+    try {
+        const pedidos = await repositoryMethods.getPedidosByUserId(clienteId); 
+        if (!pedidos) {
+            throw new Error('Pedidos not found'); //! corregir el error que lanza
+        }
+        return pedidos.map(pedido => new pedidoDTO(pedido));
+    } catch (error) {
+        throw new Error('Error fetching pedidos: ' + error.message); //! corregir el error que lanza
+    }
+}
+
 async function notifyPedido() {
     
 }  
@@ -106,5 +118,6 @@ export default {
     getAllPedidos,
     actualizarPedidoState,
     registrarPagoPedido,
-    notifyPedido
+    notifyPedido,
+    getPedidosByUserId
 };

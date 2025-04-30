@@ -106,6 +106,20 @@ export const deletePedido = async(req, res) => {
     }
 }
 
+export const getPedidosByUserId = async(req, res) => { 
+    try {
+        const pedidos = await serviceMethods.getPedidosByUserId(req.user.id); 
+        if (!pedidos) {
+            res.writeHead(400, 'bad request'); //faltan datos 
+            return res.end(); 
+        }
+        res.json(pedidos); 
+    } catch (error) {
+        res.writeHead(500, 'Server error'); //si fallo algo en el server
+        return res.end();
+    }
+}
+
 
 
 
@@ -115,4 +129,5 @@ export default {
     updatePedido,
     deletePedido, 
     updatePedidoState,
+    getPedidosByUserId
 };
