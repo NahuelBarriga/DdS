@@ -177,6 +177,15 @@ const deletePedido = async (pedidoId) => {
     }
 };
 
+const updateEstado = async (pedidoId, estado) => {
+    try {
+        return await Pedido.update({ estado }, { where: { id: pedidoId } });
+    } catch (error) {
+        console.log(error); 
+        throw new Error('Error updating estado: ' + error.message);
+    }
+}
+
 const getPedidosByUserId = async (userId) => {
     if (prueba) {
         const data = await fs.readFile(dbFilePath, 'utf8');
@@ -204,5 +213,6 @@ export default {
     updatePedido,
     savePedido,
     deletePedido,
-    getPedidosByUserId
+    getPedidosByUserId,
+    updateEstado
 };

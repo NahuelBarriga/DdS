@@ -106,6 +106,22 @@ export const getPedidosByUserId = async(clienteId) => {
     }
 }
 
+export const pagarPedido = async(pedidoId) => { //paga un pedido segun su ID
+    try {
+        return repositoryMethods.updateEstado(pedidoId, 'pagado'); //actualiza el estado a pago
+    } catch (error) {
+        throw new Error('Error fetching pedido: ' + error.message);
+    }
+}
+
+export const rechazarPedido = async(pedidoId) => { //rechaza un pedido segun su ID
+    try {
+        return repositoryMethods.updateEstado(pedidoId, 'rechazado'); //actualiza el estado a rechazado
+    } catch (error) {
+        throw new Error('Error fetching pedido: ' + error.message);
+    }
+}
+
 async function notifyPedido() {
     
 }  
@@ -119,5 +135,7 @@ export default {
     actualizarPedidoState,
     registrarPagoPedido,
     notifyPedido,
-    getPedidosByUserId
+    getPedidosByUserId,
+    pagarPedido,
+    rechazarPedido
 };

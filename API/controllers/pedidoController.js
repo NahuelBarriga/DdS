@@ -120,6 +120,34 @@ export const getPedidosByUserId = async(req, res) => {
     }
 }
 
+export const pagarPedido = async(req, res) => {
+    try {
+        const pedido = await serviceMethods.pagarPedido(req.params.pedidoId); 
+        if (!pedido) {
+            res.writeHead(400, 'bad request'); //faltan datos 
+            return res.end(); 
+        }
+        res.json(pedido); 
+    } catch (error) {
+        res.writeHead(500, 'Server error'); //si fallo algo en el server
+        return res.end();
+    }
+}
+
+export const rechazarPedido = async(req, res) => {
+    try {
+        const pedido = await serviceMethods.rechazarPedido(req.params.pedidoId); 
+        if (!pedido) {
+            res.writeHead(400, 'bad request'); //faltan datos 
+            return res.end(); 
+        }
+        res.json(pedido); 
+    } catch (error) {
+        res.writeHead(500, 'Server error'); //si fallo algo en el server
+        return res.end();
+    }
+}
+
 
 
 
@@ -129,5 +157,7 @@ export default {
     updatePedido,
     deletePedido, 
     updatePedidoState,
-    getPedidosByUserId
+    getPedidosByUserId,
+    pagarPedido,
+    rechazarPedido
 };
