@@ -30,11 +30,11 @@ const PORT = process.env.PORT || 3000;
 
 // Configurar middlewares globales
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: '*',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'nombreCafe'],
   credentials: true
-})); 
+}));
 app.use(helmet({
   contentSecurityPolicy: false,
 })); // Seguridad para la API
