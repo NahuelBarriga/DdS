@@ -1,4 +1,4 @@
-name: Create new infra and deploy
+name: Update deployed version
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -51,20 +52,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Show dockerImage parameter
-        run: echo "dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}"
-
-      - name: Deploy Bicep to Azure
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: virtual-pet-backend
-          template: ./API/infra/main.bicep
-          parameters: >
-            appName=virtual-pet-api-${{ github.run_id }}
-            dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}
-            dbUser=${{ secrets.DB_USER }}
-            dbPassword=${{ secrets.DB_PASSWORD }}
-            dbName=${{ secrets.DB_NAME }}
-            dbHost=${{ secrets.DB_HOST }}
-          
+      - name: Update Azure Container App with new image
+        run: |
+          az containerapp update \
+            --name virtual-pet-api-14804881087 \
+            --resource-group virtual-pet-backend \
+            --image ${{ env.IMAGE_NAME }}:${{ github.sha }}
