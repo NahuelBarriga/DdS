@@ -47,15 +47,15 @@ async function login(email, password) {
 function generarToken(usuario) {
     return jwt.sign(
         { id: usuario.id, email: usuario.email, cargo: usuario.cargo },
-        process.env.SECRET_KEY,
-        { expiresIn: process.env.TOKEN_EXPIRATION * 1} 
+        (process.env.SECRET_KEY || 'mi_secreto'),
+        { expiresIn: (process.env.TOKEN_EXPIRATION || 3600) * 1} 
         //Solo dios sabe pq necesita el *1, pero si se saca no funciona (asumo que tiene que ser con el singlethread de mierda de js)
     );
 }
 
 async function refreshToken(token) {
     try {
-        const usuario = jwt.verify(token, process.env.SECRET_KEY);
+        const usuario = jwt.verify(token, process.env.SECRET_KEY || 'mi_secreto');
         return this.generarToken(usuario);
     } catch (error) {
         throw new Error('Token inválido o expirado');  
@@ -65,8 +65,8 @@ async function refreshToken(token) {
 async function generarRefreshToken(usuario) { 
     const refreshToken = jwt.sign(
         { id: usuario.id},
-        process.env.SECRET_KEY,
-        { expiresIn: process.env.TOKEN_EXPIRATION * 720} 
+        (process.env.SECRET_KEY || 'mi_secreto'),
+        { expiresIn: (process.env.TOKEN_EXPIRATION || 3600) * 720} 
     ); 
 }
 
@@ -81,7 +81,7 @@ async function forgotPassword(email) {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const expiration = new Date(Date.now() + 15 * 60 * 1000); // Expira en 15 minutos
 
-    await authRepository.saveResetToken(email, resetToken, expiration); //!acomodar
+    await authRepository.saveResetToken(email, resetToken, expiration);
 
 
     // Enviar email con el enlace

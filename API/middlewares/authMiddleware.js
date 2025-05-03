@@ -8,7 +8,7 @@ export const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY); // Verificar y decodificar el token
+    const decoded = jwt.verify(token, (process.env.SECRET_KEY || "mi_secreto")); // Verificar y decodificar el token
     req.user = decoded; // Guardar datos del usuario autenticado en req.user
     next(); // Pasar al siguiente middleware o controlador
   } catch (err) {
