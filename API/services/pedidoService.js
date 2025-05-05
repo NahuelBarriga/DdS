@@ -122,6 +122,14 @@ export const rechazarPedido = async(pedidoId) => { //rechaza un pedido segun su 
     }
 }
 
+export const enviarPedido = async(pedidoId) => { //confirma un pedido segun su ID
+    try {
+        return repositoryMethods.updateEstado(pedidoId, 'enviado'); //actualiza el estado a enviado
+    } catch (error) {
+        throw new Error('Error fetching pedido: ' + error.message);
+    }
+}
+
 async function notifyPedido() {
     
 }  
@@ -137,5 +145,6 @@ export default {
     notifyPedido,
     getPedidosByUserId,
     pagarPedido,
-    rechazarPedido
+    rechazarPedido,
+    enviarPedido
 };

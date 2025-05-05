@@ -148,6 +148,20 @@ export const rechazarPedido = async(req, res) => {
     }
 }
 
+export const enviarPedido = async(req, res) => {
+    try {
+        const pedido = await serviceMethods.enviarPedido(req.params.pedidoId); 
+        if (!pedido) {
+            res.writeHead(400, 'bad request'); //faltan datos 
+            return res.end(); 
+        }
+        res.json(pedido); 
+    } catch (error) {
+        res.writeHead(500, 'Server error'); //si fallo algo en el server
+        return res.end();
+    }
+}
+
 
 
 
@@ -159,5 +173,6 @@ export default {
     updatePedidoState,
     getPedidosByUserId,
     pagarPedido,
-    rechazarPedido
+    rechazarPedido,
+    enviarPedido
 };
