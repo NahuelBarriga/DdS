@@ -27,6 +27,13 @@ param dbName string
 param dbHost string
 param dbPort string = '5432'
 
+@secure()
+param rabbitmqPassword string
+param rabbitmqUser string = 'guest'
+param rabbitmqHost string
+param rabbitmqPort string = '5672'
+param rabbitmqQueue string = 'deliveries-queue'
+
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
@@ -64,6 +71,26 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             {
               name: 'DB_PORT'
               value: dbPort
+            }
+            {
+              name: 'RABBITMQ_USER'
+              value: rabbitmqUser
+            }
+            {
+              name: 'RABBITMQ_PASSWORD'
+              value: rabbitmqPassword
+            }
+            {
+              name: 'RABBITMQ_HOST'
+              value: rabbitmqHost
+            }
+            {
+              name: 'RABBITMQ_PORT'
+              value: rabbitmqPort
+            }
+            {
+              name: 'RABBITMQ_QUEUE'
+              value: rabbitmqQueue
             }
           ]
         }

@@ -6,7 +6,7 @@ import path from 'path';
 import http from 'http';
 import db  from './database/index.js'
 import cors from 'cors'
-
+import rabbitmqService from './services/rabbitmq.service.js';
 
 // Importar rutas
 import carritoRoutes from './routes/carritoRoute.js';
@@ -73,12 +73,42 @@ async function initializeDB() {
     .catch(err => console.error("❌ Sync error:", err));
 }
 
-// Inicializar la base de datos
-initializeDB();
+// Initialize RabbitMQ and start consuming messages
+async function initializeRabbitMQ() {
+  try {
+    await rabbitmqService.connect();
+    
+    // Example message handler
+    await rabbitmqService.consume(async (message) => {
+      console.log('Received message:', message);
+      // Add your message handling logic here
+    });
+    
+    console.log("✅ RabbitMQ initialized and consuming messages");
+  } catch (error) {
+    console.error("❌ RabbitMQ initialization error:", error);
+  }
+}
+
+// Initialize services
+async function initializeServices() {
+  await initializeDB();
+  await initializeRabbitMQ();
+}
+
+// Initialize all services
+initializeServices();
 
 // Iniciar el servidor
 server.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+});
+
+// Handle graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received. Closing RabbitMQ connection...');
+  await rabbitmqService.close();
+  process.exit(0);
 });
 
 export default app;
