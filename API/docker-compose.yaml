@@ -20,7 +20,7 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
-      - RABBITMQ_QUEUE=deliveries-queue
+      - RABBITMQ_QUEUE=pedidos-updates
     depends_on:
       - db
       - rabbitmq
