@@ -134,6 +134,20 @@ export const pagarPedido = async(req, res) => {
     }
 }
 
+export const confirmarPedido = async(req, res) => {
+    try {
+        const pedido = await serviceMethods.confirmarPedido(req.params.pedidoId); 
+        if (!pedido) {
+            res.writeHead(400, 'bad request'); //faltan datos 
+            return res.end(); 
+        }
+        res.json(pedido); 
+    } catch (error) {
+        res.writeHead(500, 'Server error'); //si fallo algo en el server
+        return res.end();
+    }
+}
+
 export const rechazarPedido = async(req, res) => {
     try {
         const pedido = await serviceMethods.rechazarPedido(req.params.pedidoId); 
@@ -148,6 +162,9 @@ export const rechazarPedido = async(req, res) => {
     }
 }
 
+
+// Este método ya no sirve, en envío es problema de la nueva API
+/* 
 export const enviarPedido = async(req, res) => {
     try {
         const pedido = await serviceMethods.enviarPedido(req.params.pedidoId); 
@@ -161,6 +178,7 @@ export const enviarPedido = async(req, res) => {
         return res.end();
     }
 }
+*/
 
 
 
@@ -174,5 +192,6 @@ export default {
     getPedidosByUserId,
     pagarPedido,
     rechazarPedido,
-    enviarPedido
+    confirmarPedido,
+    /*enviarPedido*/
 };

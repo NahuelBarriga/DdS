@@ -11,13 +11,12 @@ export default (sequelize, DataTypes) => {
     estado: {
       type: DataTypes.ENUM(
         'pendiente',
+        'pagado',
         'confirmado',
         'rechazado',
-        'finalizado',
-        'pago pendiente',
-        'pagado',
-        'enviado',
-        'entregado'),
+        'listo para enviar',
+        'entregado',
+        'entrega cancelada'),
       allowNull: false,
       defaultValue: "pendiente" 
     },
@@ -32,6 +31,22 @@ export default (sequelize, DataTypes) => {
     comentario: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    nombreCliente: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    direccionEntrega: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    ciudad: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    telefonoCliente: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
   });
   

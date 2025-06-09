@@ -2,6 +2,10 @@ import repositoryMethods from "../repositories/pedidoRepository.js"; //metodos d
 import pedidoDTO from '../DTOs/pedidoDTO.js'
 import db from '../database/index.js'
 
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+dotenv.config(); 
+
 const {User, Item} = db;
 
 // Get all pedidos
@@ -114,6 +118,36 @@ export const pagarPedido = async(pedidoId) => { //paga un pedido segun su ID
     }
 }
 
+export const confirmarPedido = async(pedidoId) => { //confirma un pedido segun su ID
+    try {
+        const pedido = repositoryMethods.updateEstado(pedidoId, 'confirmado'); //actualiza el estado a confirmado
+
+        enviarPedidoAApiExterna(pedido); 
+
+        return pedido;
+    } catch (error) {
+        throw new Error('Error fetching pedido: ' + error.message);
+    }
+}
+
+
+async function enviarPedidoAApiExterna(pedido) {
+    const url = process.env.PEDIDO_SERVICE_URL; 
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pedido)
+        });
+        if (!response.ok) {
+            throw new Error(`Error enviando pedido: ${response.statusText}`);
+        }
+        //return await response.json(); //?Marque esa linea porque segun el diagrama, la API externa no devuelve nada de este intercambio
+    } catch (error) {
+        throw new Error('Error al enviar el pedido a la API externa: ' + error.message);
+    }
+}
+
 export const rechazarPedido = async(pedidoId) => { //rechaza un pedido segun su ID
     try {
         return repositoryMethods.updateEstado(pedidoId, 'rechazado'); //actualiza el estado a rechazado
@@ -122,17 +156,19 @@ export const rechazarPedido = async(pedidoId) => { //rechaza un pedido segun su 
     }
 }
 
-export const enviarPedido = async(pedidoId) => { //confirma un pedido segun su ID
+//Está función no se usa, ya que el envío es un problema de la nueva API
+/*export const enviarPedido = async(pedidoId) => { //confirma un pedido segun su ID
     try {
         return repositoryMethods.updateEstado(pedidoId, 'enviado'); //actualiza el estado a enviado
     } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message);
     }
-}
+}*/
 
+//!No se de que es esto, lo dejo por si acaso 
 async function notifyPedido() {
     
-}  
+}
 
 
 export default {
@@ -146,5 +182,5 @@ export default {
     getPedidosByUserId,
     pagarPedido,
     rechazarPedido,
-    enviarPedido
+    /*enviarPedido*/
 };

@@ -25,6 +25,12 @@ class RabbitMQService {
         }
     }
 
+
+    /*Asumo que lo que debería llegar aca es el pedido, con su id correspondiente y su estado final, sea este entregado o entrega cancelada
+    el id sería necesario ya que sino no habría como identificar a que pedido corresponde el mensaje que se recibe.
+
+    //?Asumo que deberíamos llamar a un metodo en pedidoService que se encargue de actualizar el estado del pedido en la bd
+    */
     async consume(callback) {
         try {
             if (!this.channel) {
