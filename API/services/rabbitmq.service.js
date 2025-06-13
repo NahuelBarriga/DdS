@@ -58,6 +58,25 @@ class RabbitMQService {
         }
     }
 
+
+    async publish(pedido) {
+    try {
+        if (!this.channel) {
+            await this.connect();
+        }
+
+        const payload = Buffer.from(JSON.stringify(pedido));
+        await this.channel.sendToQueue(this.queue, payload, {
+            persistent: true // garantiza que el mensaje sobreviva un reinicio de RabbitMQ
+        });
+
+        console.log('Published message to RabbitMQ:', pedido);
+    } catch (error) {
+        console.error('Error publishing message to RabbitMQ:', error);
+        throw error;
+    }
+}
+
     async close() {
         try {
             if (this.channel) {

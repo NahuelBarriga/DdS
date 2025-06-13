@@ -4,26 +4,50 @@ import repositoryMethods from "../repositories/pedidoRepository.js";
 import PedidoDTO from "../DTOs/pedidoDTO.js";
 
 
+export const createPedido = async (payload, cliente) => {
+    try {
+        const nuevoPedido = new PedidoDTO(payload);
 
-export const createPedido = async(pedido) => { 
-    try { 
-        const nuevoPedido = new PedidoDTO(pedido);
-        if (!compruebaItems(nuevoPedido.items)) {//chequea que haya stock de todos los items, por si estaba en carrito y despues se saco 
-            throw new Error('Error en los items del pedido'); //! corregir el error que lanza
+        if (!compruebaItems(nuevoPedido.items)) {
+            throw new Error('No hay stock suficiente para uno o más productos');
         }
-        
-        const pedidoNuevo =  await repositoryMethods.savePedido(nuevoPedido);
-        //getIO().emit("pedido:nuevo", (await pedidoMethods.getPedidoById(pedidoNuevo.id)));  //ya viene con DTO 
-        return pedidoNuevo; 
+
+        // Enriquecemos el pedido con snapshot del cliente
+        const pedidoData = {
+            ...nuevoPedido,
+            clienteId: cliente.id,
+            nombreCliente: cliente.name,
+            direccionEntrega: cliente.address || "Sin dirección",
+            ciudad: cliente.city || "Sin ciudad",
+            telefonoCliente: cliente.telefono || "Sin teléfono",
+            timestamp: new Date(),
+        };
+
+        const pedidoGuardado = await repositoryMethods.savePedido(pedidoData);
+
+        // TODO: guardar items del pedido si corresponde
+
+        await RabbitMQService.publish({
+            type: "pedido_nuevo",
+            id: pedidoGuardado.id,
+            nombreCliente: pedidoGuardado.nombreCliente,
+            direccionEntrega: pedidoGuardado.direccionEntrega,
+            ciudad: pedidoGuardado.ciudad,
+            telefonoCliente: pedidoGuardado.telefonoCliente,
+            estado: pedidoGuardado.estado,
+            repartidorAsignado: pedidoGuardado.repartidorAsignado
+        });
+
+        return pedidoGuardado;
     } catch (error) {
-        console.log(error);
-        throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
+        console.error("Error en service.createPedido:", error);
+        throw new Error("Error creando el pedido: " + error.message);
     }
-}
+};
 
 const compruebaItems = async (items) => {
     try {
-        items.forEach(async(item) => {
+        items.forEach(async (item) => {
             const itemDisp = await itemMethods.getItemById(item.id);
             if (itemDisp.stock < item.cantidad) {
                 return false;
@@ -35,7 +59,7 @@ const compruebaItems = async (items) => {
     }
 }
 
-export const cancelarPedidoPendiente = async(pedidoId) => { 
+export const cancelarPedidoPendiente = async (pedidoId) => {
     try {
         //getIO().emit("pedido:eliminado", (pedidoId)); 
         return await pedidoMethods.deletePedido(pedidoId);
@@ -45,14 +69,14 @@ export const cancelarPedidoPendiente = async(pedidoId) => {
 }
 
 
-async function pagarPedido(pedidos) { 
-    try { 
+async function pagarPedido(pedidos) {
+    try {
         const total = getTotal(pedidos);
         const pedidoDTO = total; //todo: parsear los datos para que sea un pedidoDTO
         pagoMethods.efectuarPago(pedidoDTO); //todo: ver como se hace el pago
         pedidos.forEach(pedido => {
             pedidoMethods.pagarPedido(pedido.id); //cierra los pedidos 
-        }); 
+        });
     } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
     }
@@ -60,9 +84,9 @@ async function pagarPedido(pedidos) {
 
 
 async function addItemsToPedido(pedido, items) {  //todo: ver esto pq en realidad deberia editar pq se pueden restar items
-    try { 
-        
-        const updatedPedido = pedido.items.add(items); 
+    try {
+
+        const updatedPedido = pedido.items.add(items);
         return updatedPedido;
 
     } catch (error) {
@@ -91,13 +115,13 @@ async function getTotal(pedidos) { //entra un objeto de pedidos
             }
             PedidoDTO.items.forEach(item => {
                 total += item.price;
-            }); 
+            });
             if (PedidoDTO.coupon) {
                 total = total * coupon; //aplica el descuento del cupon (validado cuando se aplica) 
             }
         }));
         return total;
-    }catch (error) {
+    } catch (error) {
         throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
     }
 }
@@ -111,16 +135,16 @@ async function getTotal(pedidos) { //entra un objeto de pedidos
 //     }
 // }
 
-export const getPedidosPendientes = async(clienteId) => {  
+export const getPedidosPendientes = async (clienteId) => {
     try {
         let filter = {
             estado: 'pendiente',
-            clienteId: clienteId, 
+            clienteId: clienteId,
         };
-        const pedidos = await pedidoMethods.getAllPedidos(filter); 
+        const pedidos = await pedidoMethods.getAllPedidos(filter);
         filter = {
             estado: 'confirmado',
-            clienteId: clienteId, 
+            clienteId: clienteId,
         };
         const pedidosConfirmados = await pedidoMethods.getAllPedidos(filter);
         pedidos.push(...pedidosConfirmados);
@@ -135,7 +159,7 @@ export const getPedidosPendientes = async(clienteId) => {
 
 
 
-export default  {
+export default {
     getPedidosPendientes,
     //addCouponToPedido,
     addItemsToPedido,

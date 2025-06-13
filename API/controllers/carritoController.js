@@ -2,18 +2,30 @@
 import serviceMethods from '../services/carritoService.js';
 
 
-export const createPedido = async (req, res) => { 
-    try {
-        req.body.clienteId = req.user.id; 
-        const newPedido = await serviceMethods.createPedido(req.body); 
-        res.writeHead(201, 'ok'); 
-        return res.end(JSON.stringify(newPedido)); 
-    } catch (error) {
-        console.log(error);
-        res.writeHead(500, 'server error'); //si fallo algo en el server
-        return res.end();
+import { User } from "../models";
+import serviceMethods from "../services/pedidoService";
+
+export const createPedido = async (req, res) => {
+  try {
+    const clienteId = req.user.id;
+
+    const user = await User.findByPk(clienteId);
+    if (!user) {
+      res.writeHead(404, 'Usuario no encontrado');
+      return res.end();
     }
-}
+
+    const pedido = await serviceMethods.createPedido(req.body, user); // <- le pasás el payload + usuario
+
+    res.writeHead(201, 'ok');
+    return res.end(JSON.stringify(pedido));
+  } catch (error) {
+    console.error("Error en createPedido:", error);
+    res.writeHead(500, 'server error');
+    return res.end();
+  }
+};
+
 
 export const cancelarPedidoPendiente = async(req, res) => { 
     try {
