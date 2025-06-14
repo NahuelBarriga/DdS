@@ -207,6 +207,23 @@ const getPedidosByUserId = async (userId) => {
     }
 }
 
+const findPedidoByExternalId = async (externalId) => {
+    if (prueba) {
+        const data = await fs.readFile(dbFilePath, 'utf8');
+        const pedidos = JSON.parse(data);
+        return pedidos.find(pedido => pedido.externalPedidoId === externalId);
+    } else {
+        try {
+            return await Pedido.findOne({
+                where: { externalPedidoId: externalId }
+            });
+        } catch (error) {
+            console.log(error);
+            throw new Error('Error finding pedido by external ID: ' + error.message);
+        }
+    }
+};
+
 export default {
     getAll,
     findPedidoById,
@@ -214,5 +231,6 @@ export default {
     savePedido,
     deletePedido,
     getPedidosByUserId,
-    updateEstado
+    updateEstado,
+    findPedidoByExternalId
 };

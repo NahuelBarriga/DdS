@@ -44,7 +44,6 @@ class RabbitMQService {
                 if (msg !== null) {
                     try {
                         const content = JSON.parse(msg.content.toString());
-                        console.log('RECEIVED MESSAGE: ', content);
                         await callback(content);
                         this.channel.ack(msg);
                     } catch (error) {

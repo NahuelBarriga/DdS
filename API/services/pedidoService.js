@@ -149,6 +149,24 @@ async function notifyPedido() {
     
 }  
 
+export const handleStatusUpdate = async(message) => {
+    try {
+        const { pedidoId, nuevoEstado } = message;
+        
+        // Find pedido by externalPedidoId
+        const pedido = await repositoryMethods.findPedidoByExternalId(pedidoId);
+        if (!pedido) {
+            console.log(`Pedido with external ID ${pedidoId} not found`);
+            return null;
+        }
+
+        // Update the estado
+        return await repositoryMethods.updateEstado(pedido.id, nuevoEstado);
+    } catch (error) {
+        console.error('Error updating pedido status:', error.message);
+        return null;
+    }
+}
 
 export default {
     getPedidoById,
@@ -161,5 +179,6 @@ export default {
     getPedidosByUserId,
     pagarPedido,
     rechazarPedido,
-    enviarPedido
+    enviarPedido,
+    handleStatusUpdate
 };

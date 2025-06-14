@@ -7,6 +7,7 @@ import http from 'http';
 import db  from './database/index.js'
 import cors from 'cors'
 import rabbitmqService from './services/rabbitmq.service.js';
+import pedidoService from './services/pedidoService.js';
 
 // Importar rutas
 import carritoRoutes from './routes/carritoRoute.js';
@@ -80,8 +81,10 @@ async function initializeRabbitMQ() {
     
     // Example message handler
     await rabbitmqService.consume(async (message) => {
-      console.log('Received message:', message);
-      // Add your message handling logic here
+        console.log("Received message", message)
+        if (message.type === 'status_update') {
+            await pedidoService.handleStatusUpdate(message);
+        }
     });
     
     console.log("✅ RabbitMQ initialized and consuming messages");
