@@ -122,7 +122,7 @@ export const getPedidosByUserId = async(req, res) => {
 
 export const pagarPedido = async(req, res) => {
     try {
-        const pedido = await serviceMethods.pagarPedido(req.params.pedidoId); 
+        const pedido = await serviceMethods.pagarPedido(req.params.pedidoId, req.body); 
         if (!pedido) {
             res.writeHead(400, 'bad request'); //faltan datos 
             return res.end(); 

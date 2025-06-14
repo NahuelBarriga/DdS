@@ -1,6 +1,7 @@
 import repositoryMethods from "../repositories/pedidoRepository.js"; //metodos de comunicacion con la db
 import pedidoDTO from '../DTOs/pedidoDTO.js'
 import db from '../database/index.js'
+import externalPedidoService from "./externalPedidoService.js";
 
 const {User, Item} = db;
 
@@ -106,11 +107,25 @@ export const getPedidosByUserId = async(clienteId) => {
     }
 }
 
-export const pagarPedido = async(pedidoId) => { //paga un pedido segun su ID
+export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su ID
     try {
-        return repositoryMethods.updateEstado(pedidoId, 'pagado'); //actualiza el estado a pago
+        // Create external pedido first
+        const externalPedido = await externalPedidoService.createExternalPedido({
+            nombreCliente: body.nombreCliente,
+            direccionEntrega: body.direccionEntrega,
+            ciudad: body.ciudad,
+            telefonoCliente: body.telefonoCliente
+        });
+
+        // Update local pedido with external ID and mark as paid
+        await repositoryMethods.updatePedido(pedidoId, {
+            externalPedidoId: String(externalPedido.id),
+            estado: externalPedido.estado
+        });
+
+        return await repositoryMethods.getPedidoById(pedidoId);
     } catch (error) {
-        throw new Error('Error fetching pedido: ' + error.message);
+        throw new Error('Error al pagar pedido: ' + error.message);
     }
 }
 

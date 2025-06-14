@@ -16,7 +16,7 @@ class ExternalPedidoService {
 
             return response.data;
         } catch (error) {
-            console.error('Error creating external pedido:', error);
+            console.error('Error creating external pedido:', error.data);
             throw new Error(`Failed to create external pedido: ${error.message}`);
         }
     }
