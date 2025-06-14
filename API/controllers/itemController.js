@@ -88,6 +88,7 @@ export const deleteItem = async (req, res) => {
 
 export const getAllCategorias = async (req, res) => { 
     try {
+        console.log("pidiendo categorias")
         const categorias = await serviceMethods.getAllCategorias(); 
         res.json(categorias);
     } catch {

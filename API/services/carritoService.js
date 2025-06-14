@@ -2,6 +2,7 @@ import pedidoMethods from "../services/pedidoService.js";
 import itemMethods from "./itemService.js"
 import repositoryMethods from "../repositories/pedidoRepository.js";
 import PedidoDTO from "../DTOs/pedidoDTO.js";
+import externalPedidoService from "./externalPedidoService.js";
 
 
 
@@ -12,12 +13,23 @@ export const createPedido = async(pedido) => {
             throw new Error('Error en los items del pedido'); //! corregir el error que lanza
         }
         
+        // Create pedido in external system
+        const externalPedido = await externalPedidoService.createExternalPedido({
+            nombreCliente: pedido.nombreCliente,
+            direccionEntrega: pedido.direccionEntrega,
+            ciudad: pedido.ciudad,
+            telefonoCliente: pedido.telefonoCliente
+        });
+
+        // Add external pedido ID to our local pedido
+        nuevoPedido.externalPedidoId = externalPedido.id;
+        
         const pedidoNuevo =  await repositoryMethods.savePedido(nuevoPedido);
         //getIO().emit("pedido:nuevo", (await pedidoMethods.getPedidoById(pedidoNuevo.id)));  //ya viene con DTO 
         return pedidoNuevo; 
     } catch (error) {
         console.log(error);
-        throw new Error('Error fetching pedido: ' + error.message); //! corregir el error que lanza
+        throw new Error('Error creating pedido: ' + error.message);
     }
 }
 

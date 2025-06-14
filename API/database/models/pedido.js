@@ -17,7 +17,12 @@ export default (sequelize, DataTypes) => {
         'pago pendiente',
         'pagado',
         'enviado',
-        'entregado'),
+        'entregado',
+        'Confirmado',
+        'Listo para enviar',
+        'Entregado',
+        'Entrega cancelada'
+      ),
       allowNull: false,
       defaultValue: "pendiente" 
     },
@@ -33,6 +38,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+    externalPedidoId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: 'ID of the pedido in the external system'
+    }
   });
   
 };
