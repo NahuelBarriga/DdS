@@ -109,6 +109,17 @@ export const getPedidosByUserId = async(clienteId) => {
 
 export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su ID
     try {
+        // Get existing pedido first
+        const existingPedido = await repositoryMethods.findPedidoById(pedidoId, {
+            include: [
+                { model: Item, as: 'items', attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } }
+            ]
+        });
+
+        if (!existingPedido) {
+            throw new Error('Pedido not found');
+        }
+
         // Create external pedido first
         const externalPedido = await externalPedidoService.createExternalPedido({
             nombreCliente: body.nombreCliente,
@@ -117,13 +128,16 @@ export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su 
             telefonoCliente: body.telefonoCliente
         });
 
-        // Update local pedido with external ID and mark as paid
-        await repositoryMethods.updatePedido(pedidoId, {
+        // Update local pedido with external ID and mark as paid, preserving items
+        const updateData = {
+            ...existingPedido.toJSON(),
             externalPedidoId: String(externalPedido.id),
             estado: externalPedido.estado
-        });
+        };
 
-        return await repositoryMethods.getPedidoById(pedidoId);
+        await repositoryMethods.updatePedido(pedidoId, updateData);
+
+        return await repositoryMethods.findPedidoById(pedidoId);
     } catch (error) {
         throw new Error('Error al pagar pedido: ' + error.message);
     }
