@@ -55,6 +55,6 @@ jobs:
       - name: Update Azure Container App with new image
         run: |
           az containerapp update \
-            --name virtual-pet-api-14804881087 \
+            --name virtual-pet-api \
             --resource-group virtual-pet-backend \
             --image ${{ env.IMAGE_NAME }}:${{ github.sha }}
