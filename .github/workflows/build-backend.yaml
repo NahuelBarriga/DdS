@@ -61,7 +61,7 @@ jobs:
           resourceGroupName: virtual-pet-backend
           template: ./API/infra/main.bicep
           parameters: >
-            appName=virtual-pet-api-${{ github.run_id }}
+            appName=virtual-pet-api
             dockerImage=${{ env.IMAGE_NAME }}:${{ github.sha }}
             dbUser=${{ secrets.DB_USER }}
             dbPassword=${{ secrets.DB_PASSWORD }}
