@@ -16,7 +16,13 @@ class RabbitMQService {
                 port: '5672'
             };
 
-            const url = `amqp://${process.env.RABBITMQ_USER || defaultConfig.user}:${process.env.RABBITMQ_PASSWORD || defaultConfig.password}@${process.env.RABBITMQ_HOST || defaultConfig.host}:${process.env.RABBITMQ_PORT || defaultConfig.port}`;
+            // Handle both local and CloudAMQP URL formats
+            let url;
+            if (process.env.RABBITMQ_URL) {
+                url = process.env.RABBITMQ_URL;
+            } else {
+                url = `amqp://${process.env.RABBITMQ_USER || defaultConfig.user}:${process.env.RABBITMQ_PASSWORD || defaultConfig.password}@${process.env.RABBITMQ_HOST || defaultConfig.host}:${process.env.RABBITMQ_PORT || defaultConfig.port}`;
+            }
             this.connection = await amqp.connect(url);
             this.channel = await this.connection.createChannel();
             

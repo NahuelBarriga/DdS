@@ -67,9 +67,6 @@ jobs:
             dbPassword=${{ secrets.DB_PASSWORD }}
             dbName=${{ secrets.DB_NAME }}
             dbHost=${{ secrets.DB_HOST }}
-            rabbitmqUser=${{ secrets.RABBITMQ_USER }}
-            rabbitmqPassword=${{ secrets.RABBITMQ_PASSWORD }}
-            rabbitmqHost=${{ secrets.RABBITMQ_HOST }}
-            rabbitmqPort=${{ secrets.RABBITMQ_PORT }}
+            rabbitmqUrl=${{ secrets.RABBITMQ_URL }}
             rabbitmqQueue=deliveries-queue
           
