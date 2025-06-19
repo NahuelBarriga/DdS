@@ -9,20 +9,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     },
     estado: {
-      type: DataTypes.ENUM(
-        'pendiente',
-        'confirmado',
-        'rechazado',
-        'finalizado',
-        'pago pendiente',
-        'pagado',
-        'enviado',
-        'entregado',
-        'Confirmado',
-        'Listo para enviar',
-        'Entregado',
-        'Entrega cancelada'
-      ),
+      type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "pendiente" 
     },

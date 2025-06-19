@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class ExternalPedidoService {
     constructor() {
-        this.baseURL = 'http://localhost:3003'; // Parametrizar para usar .env
+        this.baseURL = process.env.PEDIDOS_SERVICE_URL || 'http://localhost:3003'; // Parametrizar para usar .env
     }
 
     async createExternalPedido(pedidoData) {

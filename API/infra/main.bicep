@@ -31,6 +31,8 @@ param dbPort string = '5432'
 param rabbitmqUrl string
 param rabbitmqQueue string = 'deliveries-queue'
 
+param pedidosServiceUrl string
+
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
@@ -80,6 +82,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             {
               name: 'RABBITMQ_QUEUE'
               value: rabbitmqQueue
+            }
+            {
+              name: 'PEDIDOS_SERVICE_URL'
+              value: pedidosServiceUrl
             }
           ]
         }
