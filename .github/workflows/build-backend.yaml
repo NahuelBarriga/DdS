@@ -69,4 +69,4 @@ jobs:
             dbHost=${{ secrets.DB_HOST }}
             rabbitmqUrl=${{ secrets.RABBITMQ_URL }}
             rabbitmqQueue=deliveries-queue
-          
+            pedidosServiceUrl=${{ secrets.PEDIDOS_SERVICE_URL }}
