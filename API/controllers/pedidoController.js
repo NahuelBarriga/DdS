@@ -129,6 +129,7 @@ export const pagarPedido = async(req, res) => {
         }
         res.json(pedido); 
     } catch (error) {
+        console.log("Error paying pedido", error);
         res.writeHead(500, 'Server error'); //si fallo algo en el server
         return res.end();
     }

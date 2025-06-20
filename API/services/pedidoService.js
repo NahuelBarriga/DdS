@@ -139,6 +139,7 @@ export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su 
 
         return await repositoryMethods.findPedidoById(pedidoId);
     } catch (error) {
+        console.log("Hubo un error actualizando el pedido: ", error);
         throw new Error('Error al pagar pedido: ' + error.message);
     }
 }
