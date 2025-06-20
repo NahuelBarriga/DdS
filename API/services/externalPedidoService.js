@@ -11,7 +11,8 @@ class ExternalPedidoService {
                 nombreCliente: pedidoData.nombreCliente,
                 direccionEntrega: pedidoData.direccionEntrega,
                 ciudad: pedidoData.ciudad,
-                telefonoCliente: pedidoData.telefonoCliente
+                telefonoCliente: pedidoData.telefonoCliente,
+                items: pedidoData.items
             });
 
             return response.data;

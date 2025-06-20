@@ -121,11 +121,17 @@ export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su 
         }
 
         // Create external pedido first
+        const itemsForExternal = existingPedido.items.map(item => ({
+            nombre: item.nombre,
+            cantidad: item.PedidoItem ? item.PedidoItem.cantidad : item.cantidad
+        }));
+        
         const externalPedido = await externalPedidoService.createExternalPedido({
             nombreCliente: body.nombreCliente,
             direccionEntrega: body.direccionEntrega,
             ciudad: body.ciudad,
-            telefonoCliente: body.telefonoCliente
+            telefonoCliente: body.telefonoCliente,
+            items: itemsForExternal
         });
 
         // Update local pedido with external ID and mark as paid, preserving items
