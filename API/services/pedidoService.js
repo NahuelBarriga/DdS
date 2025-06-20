@@ -137,7 +137,11 @@ export const pagarPedido = async(pedidoId, body) => { //paga un pedido segun su 
 
         await repositoryMethods.updatePedido(pedidoId, updateData);
 
-        return await repositoryMethods.findPedidoById(pedidoId);
+        return await repositoryMethods.findPedidoById(pedidoId, {
+            include: [
+                { model: Item, as: 'items', attributes: ['id', 'nombre', 'precio'], through: { attributes: ['cantidad'] } }
+            ]
+        });
     } catch (error) {
         console.log("Hubo un error actualizando el pedido: ", error);
         throw new Error('Error al pagar pedido: ' + error.message);
